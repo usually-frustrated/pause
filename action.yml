@@ -1,0 +1,19 @@
+name: 'Pause Action'
+description: 'Orchestrates resume generation using Bun and TypeScript'
+author: 'sushruth'
+inputs:
+  resume_file:
+    description: 'Path to the resume.json file (e.g., .github/resume.json)'
+    required: true
+    type: string
+  templates:
+    description: 'Comma-separated list of template repository URLs (e.g., github.com/sushruth/pause-template-latex)'
+    required: true
+    type: string
+  github_token:
+    description: 'GitHub token for API access (used to clone templates)'
+    required: true
+    type: string
+runs:
+  using: 'node18'
+  main: 'src/index.ts'
