@@ -10,7 +10,7 @@ import { join, dirname, basename, extname } from 'path';
 import type { TemplateManifest, ResumeData } from './types';
 import { escapeLatex, escapeHtml, escapeTypst } from './utils';
 
-const BIN_DIR = process.env.RUNNER_TOOL_CACHE || '/tmp/pause-bin';
+const BIN_DIR = process.env.RUNNER_TEMP ? join(process.env.RUNNER_TEMP, 'pause-bin') : '/tmp/pause-bin';
 const OUTPUT_DIR = process.cwd();
 
 interface BinaryInfo {
@@ -74,11 +74,13 @@ export async function installBinaries(): Promise<void> {
       }
     } else {
       // Single binary file
-      const binPath = join(BIN_DIR, binary.name);
-      await mkdir(dirname(binPath), { recursive: true });
+      // Use a specific directory for this tool to avoid caching unrelated files
+      toolPath = join(BIN_DIR, `${binary.name}-${binary.version}`);
+      const binPath = join(toolPath, binary.name);
+
+      await mkdir(toolPath, { recursive: true });
       await Bun.write(binPath, Bun.file(downloadPath));
       await chmod(binPath, 0o755);
-      toolPath = dirname(binPath);
     }
 
     // Cache the tool
