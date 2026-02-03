@@ -11,6 +11,12 @@ import { resolve } from "path";
 import type { ActionInputs, ResumeData, BuildResult } from "./types";
 import { parseTemplates, resolveTemplate, loadManifest } from "./template";
 import { installBinaries, renderTemplate, buildTemplate } from "./builder";
+import {
+  getChangelog,
+  generateReleaseTag,
+  createGitHubRelease,
+  deployToGitHubPages,
+} from "./release";
 
 async function run(): Promise<void> {
   try {
@@ -19,6 +25,15 @@ async function run(): Promise<void> {
       resumeFile: core.getInput("resume_file", { required: true }),
       templates: core.getInput("templates", { required: true }),
       githubToken: core.getInput("github_token", { required: true }),
+      createRelease: core.getBooleanInput("create_release") ?? true,
+      releaseTag: core.getInput("release_tag") || undefined,
+      changelogSource: (core.getInput("changelog_source") || "commits") as
+        | "commits"
+        | "file"
+        | "manual",
+      changelogFile: core.getInput("changelog_file") || undefined,
+      changelogText: core.getInput("changelog_text") || undefined,
+      deployGithubPages: core.getBooleanInput("deploy_github_pages") ?? false,
     };
 
     core.info("🎬 Starting Pause Action...");
@@ -74,6 +89,7 @@ async function run(): Promise<void> {
           template: templateUrl,
           outputPath,
           success: true,
+          templateType: manifest.type,
         });
       } catch (error) {
         const errorMessage =
@@ -105,7 +121,64 @@ async function run(): Promise<void> {
 
     core.endGroup();
 
-    // 7. Set outputs
+    // 7. Create release if enabled
+    if (inputs.createRelease && successful.length > 0) {
+      core.startGroup("📦 Creating GitHub Release");
+
+      try {
+        const octokit = github.getOctokit(inputs.githubToken);
+        const { owner, repo } = github.context.repo;
+
+        // Generate release tag
+        const releaseTag = generateReleaseTag(inputs.releaseTag);
+        core.info(`Release tag: ${releaseTag}`);
+
+        // Generate changelog
+        const changelog = await getChangelog(inputs, octokit, owner, repo);
+        core.info("Changelog generated");
+
+        // Create release with artifacts
+        const artifactPaths = successful.map((r) => r.outputPath);
+        const releaseInfo = await createGitHubRelease(
+          octokit,
+          owner,
+          repo,
+          releaseTag,
+          changelog,
+          artifactPaths,
+        );
+
+        core.setOutput("release_url", releaseInfo.htmlUrl);
+        core.setOutput("release_tag", releaseInfo.tag);
+
+        core.info(`✅ Release created: ${releaseInfo.htmlUrl}`);
+
+        // Deploy to GitHub Pages if enabled and single HTML template
+        const htmlResults = successful.filter((r) => r.templateType === "html");
+        if (inputs.deployGithubPages && htmlResults.length === 1) {
+          core.info("Deploying to GitHub Pages...");
+          await deployToGitHubPages(
+            octokit,
+            owner,
+            repo,
+            htmlResults[0].outputPath,
+          );
+          core.info(`✅ Deployed to https://${owner}.github.io/${repo}/`);
+        } else if (inputs.deployGithubPages && htmlResults.length !== 1) {
+          core.warning(
+            `Cannot deploy to GitHub Pages: found ${htmlResults.length} HTML templates (expected exactly 1)`,
+          );
+        }
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        core.warning(`Failed to create release: ${errorMessage}`);
+      }
+
+      core.endGroup();
+    }
+
+    // 8. Set outputs
     core.setOutput("artifacts", successful.map((r) => r.outputPath).join(","));
     core.setOutput("success_count", successful.length);
     core.setOutput("failure_count", failed.length);

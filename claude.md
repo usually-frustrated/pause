@@ -6,9 +6,9 @@
 
 ## Project Essence
 
-**What**: Resume generation pipeline as GitHub Action  
-**How**: Gomplate templates + Tectonic/Typst/HTML builders  
-**Why**: One data file → multiple professional outputs (push-to-publish)
+**What**: Resume generation pipeline as GitHub Action with auto-release  
+**How**: Gomplate templates + Tectonic/Typst/HTML builders + GitHub Releases  
+**Why**: One data file → multiple professional outputs (push-to-publish with changelog)
 
 ## Architecture (5 Minutes)
 
@@ -24,6 +24,10 @@ Gomplate Rendering ([[ ]] syntax)
 Build Strategy (Tectonic/Typst/static)
     ↓
 Artifacts (PDF/HTML)
+    ↓
+GitHub Release (automatic, with changelog)
+    ↓
+[Optional] GitHub Pages (single HTML)
 ```
 
 ## Three-Tier Template System
@@ -38,10 +42,12 @@ Artifacts (PDF/HTML)
 
 ```
 src/
-├── index.ts        # Main orchestrator, processes templates
+├── index.ts        # Main orchestrator, processes templates, creates releases
 ├── template.ts     # 3-tier resolution, manifest parsing
 ├── builder.ts      # Binary install, Gomplate, build strategies
-└── utils.ts        # Sanitization (LaTeX/HTML/Typst escaping)
+├── release.ts      # Changelog generation, GitHub releases, Pages deployment
+├── utils.ts        # Sanitization (LaTeX/HTML/Typst escaping)
+└── types.ts        # TypeScript type definitions
 
 templates/
 ├── minimal/        # LaTeX single-column
@@ -59,7 +65,9 @@ action.yml          # Composite action, uses oven-sh/setup-bun
 4. **Load** `template.yaml` manifest
 5. **Render** `.tmpl` files with Gomplate
 6. **Build** via Tectonic/Typst/static
-7. **Output** artifacts
+7. **Generate** changelog from commits (or file/manual)
+8. **Create** GitHub release with artifacts
+9. **Deploy** to GitHub Pages (if single HTML template + enabled)
 
 ## Template Manifest
 
@@ -91,8 +99,8 @@ delimiters: ["[[", "]]"] # Avoid LaTeX {} conflicts
 
 ## Current Status
 
-✅ **Complete**: Core action, 3 built-in templates, 3-tier system  
-⏳ **Pending**: End-to-end testing, artifact upload, official template repo
+✅ **Complete**: Core action, 3 built-in templates, 3-tier system, auto-release, GitHub Pages  
+⏳ **Pending**: End-to-end testing, official template repo
 
 ## Common Tasks
 
@@ -123,6 +131,7 @@ bun run src/index.ts
 ```yaml
 # User workflow
 templates: minimal
+create_release: true  # default
 
 # Parsed to
 "builtin:minimal"
@@ -138,6 +147,12 @@ main.tex (injected with resume.json data)
 
 # Built with Tectonic
 resume.pdf
+
+# Release created
+Tag: resume-20260203-143022
+Assets: resume.pdf
+Changelog: Generated from commits
+URL: https://github.com/user/repo/releases/tag/resume-20260203-143022
 ```
 
 ## Important Conventions
@@ -156,9 +171,32 @@ resume.pdf
   "@actions/core": "GitHub Actions helpers",
   "@actions/exec": "Command execution",
   "@actions/tool-cache": "Binary caching",
+  "@actions/artifact": "Artifact upload",
+  "@actions/github": "GitHub API (releases, repos)",
   "yaml": "Manifest parsing"
 }
 ```
+
+## Release Features
+
+**Automatic Release Creation** (default: enabled):
+
+- Auto-generates timestamp-based tags: `resume-YYYYMMDD-HHMMSS`
+- Custom tags supported via `release_tag` input
+- Uploads all generated artifacts (PDF/HTML) as release assets
+
+**Changelog Generation** (3 sources):
+
+1. `commits` (default): Parses git history, groups by type (feat/fix/docs)
+2. `file`: Reads from user-provided file path
+3. `manual`: Uses provided text directly
+
+**GitHub Pages Deployment** (opt-in):
+
+- Requires `deploy_github_pages: true`
+- Only works with single HTML template output
+- Deploys to `https://<username>.github.io/<repo>/`
+- Creates/updates `gh-pages` branch automatically
 
 ## Quick Reference
 

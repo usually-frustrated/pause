@@ -6,11 +6,17 @@ export interface ActionInputs {
   resumeFile: string;
   templates: string;
   githubToken: string;
+  createRelease: boolean;
+  releaseTag?: string;
+  changelogSource: "commits" | "file" | "manual";
+  changelogFile?: string;
+  changelogText?: string;
+  deployGithubPages: boolean;
 }
 
 export interface TemplateManifest {
   name: string;
-  type: 'latex' | 'typst' | 'html' | 'markdown';
+  type: "latex" | "typst" | "html" | "markdown";
   entrypoint: string;
   output_name: string;
   build_cmd?: string;
@@ -52,4 +58,20 @@ export interface BuildResult {
   outputPath: string;
   success: boolean;
   error?: string;
+  templateType?: "latex" | "typst" | "html" | "markdown";
+}
+
+export interface ReleaseInfo {
+  tag: string;
+  name: string;
+  body: string;
+  htmlUrl: string;
+  uploadUrl: string;
+}
+
+export interface CommitInfo {
+  sha: string;
+  message: string;
+  author: string;
+  date: string;
 }

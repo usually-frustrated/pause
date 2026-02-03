@@ -5,15 +5,33 @@ inputs:
   resume_file:
     description: "Path to the resume.json file (e.g., .github/resume.json)"
     required: true
-    type: string
   templates:
     description: "Comma-separated list of template repository URLs (e.g., github.com/sushruth/pause-template-latex)"
     required: true
-    type: string
   github_token:
     description: "GitHub token for API access (used to clone templates)"
     required: true
-    type: string
+  create_release:
+    description: "Whether to create a GitHub release with generated artifacts"
+    required: false
+    default: "true"
+  release_tag:
+    description: "Release tag (e.g., v1.0.0). If not provided, auto-generates based on timestamp"
+    required: false
+  changelog_source:
+    description: "Source for changelog generation: 'commits' (default), 'file', or 'manual'"
+    required: false
+    default: "commits"
+  changelog_file:
+    description: "Path to changelog file when changelog_source is 'file'"
+    required: false
+  changelog_text:
+    description: "Manual changelog text when changelog_source is 'manual'"
+    required: false
+  deploy_github_pages:
+    description: "Deploy single HTML template to GitHub Pages as <username>-<reponame>.github.io"
+    required: false
+    default: "false"
 runs:
   using: "composite"
   steps:
@@ -37,3 +55,9 @@ runs:
         INPUT_RESUME_FILE: ${{ inputs.resume_file }}
         INPUT_TEMPLATES: ${{ inputs.templates }}
         INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
+        INPUT_CREATE_RELEASE: ${{ inputs.create_release }}
+        INPUT_RELEASE_TAG: ${{ inputs.release_tag }}
+        INPUT_CHANGELOG_SOURCE: ${{ inputs.changelog_source }}
+        INPUT_CHANGELOG_FILE: ${{ inputs.changelog_file }}
+        INPUT_CHANGELOG_TEXT: ${{ inputs.changelog_text }}
+        INPUT_DEPLOY_GITHUB_PAGES: ${{ inputs.deploy_github_pages }}
