@@ -1,5 +1,7 @@
 # Template System Architecture
 
+> **Documentation follows the 5Cs**: Concise, Complete, Correct, Confident yet Humble, Clear. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
 Pause uses a **three-tier template discovery system** for maximum flexibility.
 
 ## The Three Tiers
@@ -80,6 +82,7 @@ templates: simple
 _Coming soon in `pause-org/pause-templates` repository_
 
 The official template repository will include:
+
 - **academic-cv**: Multi-page academic CV with publications
 - **creative-portfolio**: Portfolio-style resume with projects
 - **executive**: Executive resume with achievements focus
@@ -87,6 +90,7 @@ The official template repository will include:
 - **two-column**: Compact two-column layout
 
 Usage:
+
 ```yaml
 templates: |
   official:academic-cv
@@ -164,18 +168,21 @@ The action will generate one output per template.
 ## Benefits of This Architecture
 
 ### Tier 1 (Built-in)
+
 - ✅ Zero setup - works immediately
 - ✅ Fast - no cloning
 - ✅ Tested - part of action repo
 - ✅ Versioned - tied to action version
 
 ### Tier 2 (Official)
+
 - ✅ Curated quality
 - ✅ Community vetted
 - ✅ Well documented
 - ✅ Regular updates
 
 ### Tier 3 (Custom)
+
 - ✅ Full control
 - ✅ Private templates
 - ✅ Experiment freely
@@ -184,11 +191,13 @@ The action will generate one output per template.
 ## Examples
 
 ### Minimal Setup
+
 ```yaml
 templates: minimal
 ```
 
 ### Multi-Format
+
 ```yaml
 templates: |
   minimal      # PDF via LaTeX
@@ -197,6 +206,7 @@ templates: |
 ```
 
 ### Advanced Mix
+
 ```yaml
 templates: |
   minimal                        # Quick PDF
@@ -214,6 +224,7 @@ templates: |
 ---
 
 **Documentation:**
+
 - [Template Creation Guide](TEMPLATE_GUIDE.md)
 - [Built-in Templates Catalog](templates/README.md)
 - [Main README](README.md)

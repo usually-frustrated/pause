@@ -155,7 +155,7 @@ delimiters: ["[[", "]]"]
 
 ### Example Template
 
-See [TEMPLATE_GUIDE.md](TEMPLATE_GUIDE.md) for a complete guide.
+See [Template Creation Guide](docs/TEMPLATE_GUIDE.md) for complete details.
 
 ```latex
 % main.tex.tmpl
@@ -211,10 +211,15 @@ pause/
 
 ## Documentation
 
-- [Template Creation Guide](TEMPLATE_GUIDE.md)
-- [Implementation Plan](docs/pause-implementation-plan.md)
-- [Project Specification](docs/initial-spec.md)
-- [Project Status](STATUS.md)
+> All documentation follows the **5C Principles**: Concise, Complete, Correct, Confident yet Humble, Clear.
+
+- **[Template System Architecture](docs/TEMPLATES.md)** - Three-tier template system overview
+- **[Template Creation Guide](docs/TEMPLATE_GUIDE.md)** - Complete guide for creating custom templates
+- **[Project Status](docs/STATUS.md)** - Current progress and roadmap
+- **[Implementation Plan](docs/pause-implementation-plan.md)** - Original implementation roadmap
+- **[Project Specification](docs/initial-spec.md)** - System architecture and design
+- **[Claude Context](docs/claude.md)** - Concise context for AI agents
+- **[Contributing Guidelines](docs/CONTRIBUTING.md)** - Code and documentation standards
 
 ## License
 

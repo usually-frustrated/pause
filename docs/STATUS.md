@@ -1,5 +1,7 @@
 # Project Status
 
+> **Documentation follows the 5Cs**: Concise, Complete, Correct, Confident yet Humble, Clear. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
 **Last Updated**: 2026-02-03
 
 ## Completed Tasks ✅
