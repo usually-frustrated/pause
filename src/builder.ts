@@ -133,10 +133,9 @@ export async function renderTemplate(
   const args = [
     '--file', entrypointPath,
     '--out', outputPath,
-    '--datasource', `resume=${dataPath}`,
     '--left-delim', leftDelim,
     '--right-delim', rightDelim,
-    '--context', '.=resume'
+    '--context', `.=${dataPath}`
   ];
 
   // Add custom functions based on template type
