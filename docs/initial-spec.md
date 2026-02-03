@@ -1,7 +1,11 @@
 # Project Pause: System Specification
 
-**Version:** 0.1.0 (Draft)
+> **Status**: 📜 Historic Document  
+> **Created**: 2026-01-27  
+> **Purpose**: Original design specification - preserved for reference  
+> **Current Docs**: See [STATUS.md](STATUS.md) for implementation status
 
+**Version:** 0.1.0 (Draft)  
 **Concept:** "Pause > Resume"
 
 **Goal:** A "Push-to-Publish" orchestration system that transforms a `resume.json` data file into multiple compiled formats (PDF, HTML) using a universal templating engine and containerized build steps.
@@ -34,9 +38,9 @@ graph TD
     subgraph Processing [Build Pipeline]
         Gomplate[Gomplate Engine<br/><i>Data Injection</i>]
         Strategies[Build Strategies<br/><i>Compilation</i>]
-        
+
         Sources{{"Latex Src<br/>Typst Src<br/>HTML Src"}}
-        
+
         Engines[Tectonic Engine<br/>Typst CLI<br/>HTML/Asset Copy]
 
         Gomplate --> Sources
@@ -57,23 +61,22 @@ graph TD
 
 ### 2.1 The Data Source
 
-* **Format:** [JSON Resume](https://jsonresume.org/schema/) standard.
-* **Default Filename:** `resume.json` (configurable).
-* **Location:** Root of the user's repository.
+- **Format:** [JSON Resume](https://jsonresume.org/schema/) standard.
+- **Default Filename:** `resume.json` (configurable).
+- **Location:** Root of the user's repository.
 
 ### 2.2 The Pause Action (The Orchestrator)
 
 This is the central logic, implemented as a Composite GitHub Action.
 
-* **Role:**
+- **Role:**
+
 1. Parse the `templates` input list.
 2. Install necessary CLI tools (Gomplate, Tectonic, Typst).
 3. Iterate through requested templates.
 4. Execute the **Gomplate Strategy** (Render).
 5. Execute the **Build Strategy** (Compile).
 6. Upload results to GitHub Releases.
-
-
 
 ### 2.3 The Template Standard (The Contract)
 
@@ -101,14 +104,14 @@ pause-template-modern/
 
 ### 3.2 Manifest Schema (`template.yaml`)
 
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `name` | String | Yes | Human-readable name (e.g., "Modern Serif"). |
-| `type` | Enum | Yes | One of: `latex`, `typst`, `html`, `markdown`. |
-| `entrypoint` | String | Yes | The primary template file to process (e.g., `main.tex.tmpl`). |
-| `output_name` | String | Yes | Desired output filename *before* extension (e.g., `resume`). |
-| `build_cmd` | String | No | Override command. If omitted, Pause uses the default strategy for the `type`. |
-| `delimiters` | Array | No | Custom delimiters. Default: `["[[", "]]"]`. |
+| Field         | Type   | Required | Description                                                                   |
+| ------------- | ------ | -------- | ----------------------------------------------------------------------------- |
+| `name`        | String | Yes      | Human-readable name (e.g., "Modern Serif").                                   |
+| `type`        | Enum   | Yes      | One of: `latex`, `typst`, `html`, `markdown`.                                 |
+| `entrypoint`  | String | Yes      | The primary template file to process (e.g., `main.tex.tmpl`).                 |
+| `output_name` | String | Yes      | Desired output filename _before_ extension (e.g., `resume`).                  |
+| `build_cmd`   | String | No       | Override command. If omitted, Pause uses the default strategy for the `type`. |
+| `delimiters`  | Array  | No       | Custom delimiters. Default: `["[[", "]]"]`.                                   |
 
 **Example `template.yaml` (LaTeX):**
 
@@ -118,7 +121,6 @@ type: "latex"
 entrypoint: "cv.tex.tmpl"
 output_name: "academic-resume"
 # No build_cmd needed; Pause detects 'latex' and implies Tectonic
-
 ```
 
 **Example `template.yaml` (HTML):**
@@ -128,23 +130,20 @@ name: "Web Portfolio"
 type: "html"
 entrypoint: "index.html.tmpl"
 output_name: "index"
-
 ```
 
 ## 4. The Processing Logic
 
 ### 4.1 Templating Engine: Gomplate
 
-We use Gomplate to inject JSON data into the source files *before* compilation.
+We use Gomplate to inject JSON data into the source files _before_ compilation.
 
-* **Delimiters:** We enforce `[[` and `]]` as default global delimiters to avoid conflicts with LaTeX `{}` and CSS `{}`.
-* **Input Context:** The `resume.json` content is available at the root dot context (`[[ .basics.name ]]`).
-* **Sanitization:** Pause will inject custom Gomplate functions map:
-* `latex`: Escapes special LaTeX characters (`&`, `%`, `$`, `#`, `_`, `{`, `}`).
-* `html`: Standard HTML entity escaping.
-* `typst`: Escapes Typst syntax.
-
-
+- **Delimiters:** We enforce `[[` and `]]` as default global delimiters to avoid conflicts with LaTeX `{}` and CSS `{}`.
+- **Input Context:** The `resume.json` content is available at the root dot context (`[[ .basics.name ]]`).
+- **Sanitization:** Pause will inject custom Gomplate functions map:
+- `latex`: Escapes special LaTeX characters (`&`, `%`, `$`, `#`, `_`, `{`, `}`).
+- `html`: Standard HTML entity escaping.
+- `typst`: Escapes Typst syntax.
 
 **Example Template (`cv.tex.tmpl`):**
 
@@ -166,36 +165,33 @@ The Orchestrator selects the build tool based on the `type` field in the templat
 
 #### Strategy A: LaTeX (via Tectonic)
 
-* **Trigger:** `type: "latex"`
-* **Tool:** [Tectonic](https://tectonic-typesetting.github.io/) (Rust-based).
-* **Process:**
+- **Trigger:** `type: "latex"`
+- **Tool:** [Tectonic](https://tectonic-typesetting.github.io/) (Rust-based).
+- **Process:**
+
 1. Gomplate renders `*.tmpl` files to their native extensions.
 2. Action runs: `tectonic rendered_file.tex`.
 3. Tectonic automatically fetches packages/fonts during run.
 4. Resulting `.pdf` is staged for release.
 
-
-
 #### Strategy B: Typst
 
-* **Trigger:** `type: "typst"`
-* **Tool:** `typst-cli` (Rust-based).
-* **Process:**
+- **Trigger:** `type: "typst"`
+- **Tool:** `typst-cli` (Rust-based).
+- **Process:**
+
 1. Gomplate renders `*.tmpl` -> `*.typ`.
 2. Action runs: `typst compile rendered_file.typ`.
 
-
-
 #### Strategy C: HTML / Static
 
-* **Trigger:** `type: "html"`
-* **Tool:** None (Pure file generation) or Optional Post-Process command.
-* **Process:**
+- **Trigger:** `type: "html"`
+- **Tool:** None (Pure file generation) or Optional Post-Process command.
+- **Process:**
+
 1. Gomplate renders `*.tmpl` -> `*.html`.
 2. Assets folder is preserved.
 3. Entire directory is zipped for release OR deployed to Pages (future scope).
-
-
 
 ## 5. User Integration (The GitHub Action)
 
@@ -208,10 +204,10 @@ name: Build Resume
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'resume.json' # Only trigger when data changes
-      - '.github/workflows/pause.yml'
+      - "resume.json" # Only trigger when data changes
+      - ".github/workflows/pause.yml"
 
 jobs:
   publish:
@@ -227,42 +223,39 @@ jobs:
         with:
           # The Input Data
           resume_file: "resume.json"
-          
+
           # The Template List (The "Canvas")
           # Format: provider:user/repo or path/to/local
           templates: |
             github:pause-org/pause-template-minimal
             github:pause-org/pause-template-academic
             github:another-user/pause-template-fancy
-          
+
           # GitHub Token for API access (cloning templates + releasing)
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
 ```
 
 ## 6. Implementation Roadmap
 
 ### Phase 1: The Core Action
 
-* [ ] Create `pause-org/action` repository.
-* [ ] Implement `action.yml` (inputs definition).
-* [ ] Write logic (Node.js or Docker) to:
-* [ ] Install Gomplate/Tectonic/Typst binaries.
-* [ ] Parse the `templates` multiline string.
-* [ ] `git clone` the requested templates.
-* [ ] Run the render/build loop.
-
-
+- [ ] Create `pause-org/action` repository.
+- [ ] Implement `action.yml` (inputs definition).
+- [ ] Write logic (Node.js or Docker) to:
+- [ ] Install Gomplate/Tectonic/Typst binaries.
+- [ ] Parse the `templates` multiline string.
+- [ ] `git clone` the requested templates.
+- [ ] Run the render/build loop.
 
 ### Phase 2: The Template Registry
 
-* [ ] Create `pause-org/pause-template-minimal` (LaTeX/Tectonic example).
-* [ ] Create `pause-org/pause-template-typst` (Typst example).
-* [ ] Document the `template.yaml` spec for community contributors.
+- [ ] Create `pause-org/pause-template-minimal` (LaTeX/Tectonic example).
+- [ ] Create `pause-org/pause-template-typst` (Typst example).
+- [ ] Document the `template.yaml` spec for community contributors.
 
 ### Phase 3: The Helper Functions
 
-* [ ] Write the Gomplate plugin/function map for `| latex` and `| typst` sanitization to ensure JSON data doesn't break the build.
+- [ ] Write the Gomplate plugin/function map for `| latex` and `| typst` sanitization to ensure JSON data doesn't break the build.
 
 ## 7. Technical Constraints & Decisions
 

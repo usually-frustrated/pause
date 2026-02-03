@@ -1,5 +1,7 @@
 # Claude Context: Pause Action
 
+> **Last Updated**: 2026-02-03  
+> **Purpose**: Concise technical context for AI agents  
 > **Quick Context**: GitHub Action that transforms `resume.json` → multiple formats (PDF/HTML) using templates. Built with Bun/TypeScript. Three-tier template system: built-in → official → custom.
 
 ## Project Essence
@@ -26,11 +28,11 @@ Artifacts (PDF/HTML)
 
 ## Three-Tier Template System
 
-| Tier | Syntax | Location | Clone? |
-|------|--------|----------|--------|
-| 1. Built-in | `minimal`, `modern`, `simple` | `/templates/*` | No |
-| 2. Official | `official:name` | `pause-org/pause-templates` | Yes |
-| 3. Custom | `github:user/repo` | Any GitHub repo | Yes |
+| Tier        | Syntax                        | Location                    | Clone? |
+| ----------- | ----------------------------- | --------------------------- | ------ |
+| 1. Built-in | `minimal`, `modern`, `simple` | `/templates/*`              | No     |
+| 2. Official | `official:name`               | `pause-org/pause-templates` | Yes    |
+| 3. Custom   | `github:user/repo`            | Any GitHub repo             | Yes    |
 
 ## Key Files (What They Do)
 
@@ -66,7 +68,7 @@ name: "Template Name"
 type: latex|typst|html|markdown
 entrypoint: "main.tex.tmpl"
 output_name: "resume"
-delimiters: ["[[", "]]"]  # Avoid LaTeX {} conflicts
+delimiters: ["[[", "]]"] # Avoid LaTeX {} conflicts
 ```
 
 ## Gomplate Syntax
@@ -95,17 +97,21 @@ delimiters: ["[[", "]]"]  # Avoid LaTeX {} conflicts
 ## Common Tasks
 
 **Add built-in template**:
+
 1. Create `templates/name/`
 2. Add `template.yaml` + `.tmpl` file
 3. Update `parseTemplates()` in `template.ts`
 
 **Modify template resolution**:
+
 - Edit `src/template.ts` → `parseTemplates()` and `resolveTemplate()`
 
 **Add build strategy**:
+
 - Edit `src/builder.ts` → add case in `buildTemplate()`
 
 **Test locally**:
+
 ```bash
 bun install
 bun run typecheck

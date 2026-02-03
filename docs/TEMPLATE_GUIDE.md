@@ -1,5 +1,6 @@
 # Template Creation Guide
 
+> **Last Updated**: 2026-02-03  
 > **Documentation follows the 5Cs**: Concise, Complete, Correct, Confident yet Humble, Clear. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 Complete guide for creating custom Pause templates.

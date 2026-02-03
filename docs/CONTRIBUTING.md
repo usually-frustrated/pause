@@ -1,5 +1,8 @@
 # Contributing to Pause
 
+> **Last Updated**: 2026-02-03  
+> **Purpose**: Guidelines for code and documentation contributions
+
 ## Documentation Principles: The 5Cs
 
 All documentation in this project follows the **5C Principles**:
@@ -13,6 +16,7 @@ All documentation in this project follows the **5C Principles**:
 ### Examples
 
 **❌ Violates 5Cs** (verbose, vague, passive):
+
 ```
 It might be possible to potentially use the template system in various ways,
 depending on your specific needs and requirements. You could possibly try
@@ -21,6 +25,7 @@ seems appropriate for your use case.
 ```
 
 **✅ Follows 5Cs** (concise, complete, confident, clear):
+
 ```
 Use built-in templates for immediate results or create custom templates for
 full control. See docs/TEMPLATE_GUIDE.md for template creation.
@@ -53,11 +58,13 @@ bun run src/index.ts
 ### Pull Request Guidelines
 
 **Commit Messages**:
+
 - First line: imperative mood, <72 chars
 - Body: explain why, not what (code shows what)
 - Reference issues: `Fixes #123`
 
 **Example**:
+
 ```
 Add Typst v0.12 support
 
@@ -68,6 +75,7 @@ Fixes #42
 ```
 
 **PR Description**:
+
 - What changed and why
 - Testing performed
 - Breaking changes (if any)
@@ -79,15 +87,17 @@ Fixes #42
 - ESM imports
 - Explicit types (avoid `any`)
 - Descriptive variable names
-- Comments explain *why*, not *what*
+- Comments explain _why_, not _what_
 
 **Good**:
+
 ```typescript
 // Use tool-cache for faster subsequent runs
 const cachedPath = tc.find(binary.name, binary.version);
 ```
 
 **Bad**:
+
 ```typescript
 // Check if cached
 const cachedPath = tc.find(binary.name, binary.version);
@@ -98,6 +108,7 @@ const cachedPath = tc.find(binary.name, binary.version);
 ### Built-in Templates
 
 Built-in templates have high standards:
+
 - Production-ready design
 - Complete JSON Resume support
 - Mobile responsive (HTML)
@@ -109,6 +120,7 @@ Submit built-in templates via PR to `/templates/`.
 ### Custom Templates
 
 Create custom templates in your own repo:
+
 1. Name: `pause-template-*`
 2. Include `template.yaml`
 3. Test with example `resume.json`

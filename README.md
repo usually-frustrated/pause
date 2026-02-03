@@ -213,13 +213,19 @@ pause/
 
 > All documentation follows the **5C Principles**: Concise, Complete, Correct, Confident yet Humble, Clear.
 
+### Current Documentation
+
 - **[Template System Architecture](docs/TEMPLATES.md)** - Three-tier template system overview
 - **[Template Creation Guide](docs/TEMPLATE_GUIDE.md)** - Complete guide for creating custom templates
 - **[Project Status](docs/STATUS.md)** - Current progress and roadmap
-- **[Implementation Plan](docs/pause-implementation-plan.md)** - Original implementation roadmap
-- **[Project Specification](docs/initial-spec.md)** - System architecture and design
 - **[Claude Context](docs/claude.md)** - Concise context for AI agents
 - **[Contributing Guidelines](docs/CONTRIBUTING.md)** - Code and documentation standards
+
+### Project History
+
+- **[Changelog](CHANGELOG.md)** - Version history and notable changes
+- **[Implementation Plan](docs/pause-implementation-paln.md)** - 📜 Original roadmap (completed 2026-02-03)
+- **[Project Specification](docs/initial-spec.md)** - 📜 Original design spec (2026-01-27)
 
 ## License
 
