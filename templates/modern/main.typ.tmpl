@@ -1,0 +1,168 @@
+// Modern Resume Template
+// Generated with Pause Action
+
+#set page(
+  margin: (x: 0.6in, y: 0.6in),
+  paper: "us-letter",
+)
+
+#set text(
+  font: "Linux Libertine",
+  size: 10.5pt,
+)
+
+#let accent-color = rgb("#2563eb")
+
+// Header styling
+#let name-style(content) = {
+  text(size: 28pt, weight: "bold", fill: accent-color)[#content]
+}
+
+#let subtitle-style(content) = {
+  text(size: 12pt, fill: gray.darken(20%))[#content]
+}
+
+// Section header
+#let section(title) = {
+  v(8pt)
+  text(size: 13pt, weight: "bold", fill: accent-color)[#upper(title)]
+  v(2pt)
+  line(length: 100%, stroke: 0.5pt + accent-color)
+  v(4pt)
+}
+
+// Job entry
+#let job(company, position, startDate, endDate, highlights) = {
+  grid(
+    columns: (1fr, auto),
+    [*#company*],
+    [#text(fill: gray)[#startDate -- #endDate]]
+  )
+  text(style: "italic")[#position]
+
+  if highlights != none {
+    for highlight in highlights [
+      - #highlight
+    ]
+  }
+  v(6pt)
+}
+
+// Education entry
+#let education(institution, degree, area, startDate, endDate) = {
+  grid(
+    columns: (1fr, auto),
+    [*#institution*],
+    [#text(fill: gray)[#endDate]]
+  )
+  [#degree#if area != none [ in #area]]
+  v(6pt)
+}
+
+// Skill entry
+#let skill(name, keywords) = {
+  [*#name:* #keywords.join(", ")]
+  linebreak()
+}
+
+// ===== HEADER =====
+[[ if .basics ]]
+#align(center)[
+  #name-style[[[ .basics.name ]]]
+
+  [[ if .basics.label ]]
+  #subtitle-style[[[ .basics.label ]]]
+  #v(4pt)
+  [[ end ]]
+
+  #text(size: 9.5pt)[
+    [[ if .basics.email ]][[ .basics.email ]][[ end ]]
+    [[ if and .basics.email .basics.phone ]] • [[ end ]]
+    [[ if .basics.phone ]][[ .basics.phone ]][[ end ]]
+    [[ if and (or .basics.email .basics.phone) .basics.url ]] • [[ end ]]
+    [[ if .basics.url ]]#link("[[ .basics.url ]]")[[[ .basics.url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]]][[ end ]]
+    [[ if .basics.location ]]
+      [[ if or .basics.email .basics.phone .basics.url ]] • [[ end ]]
+      [[ .basics.location.city ]][[ if .basics.location.region ]], [[ .basics.location.region ]][[ end ]]
+    [[ end ]]
+  ]
+]
+[[ end ]]
+
+// ===== SUMMARY =====
+[[ if .basics.summary ]]
+#section("Professional Summary")
+[[ .basics.summary ]]
+[[ end ]]
+
+// ===== EXPERIENCE =====
+[[ if .work ]]
+#section("Experience")
+[[ range .work ]]
+#job(
+  "[[ .name ]]",
+  "[[ .position ]]",
+  "[[ .startDate ]]",
+  "[[ if .endDate ]][[ .endDate ]][[ else ]]Present[[ end ]]",
+  [[ if .highlights ]](
+    [[ range $idx, $val := .highlights ]][[ if $idx ]], [[ end ]]"[[ . ]]"[[ end ]]
+  )[[ else ]]none[[ end ]]
+)
+[[ end ]]
+[[ end ]]
+
+// ===== EDUCATION =====
+[[ if .education ]]
+#section("Education")
+[[ range .education ]]
+#education(
+  "[[ .institution ]]",
+  "[[ .studyType ]]",
+  [[ if .area ]]"[[ .area ]]"[[ else ]]none[[ end ]],
+  "[[ .startDate ]]",
+  "[[ if .endDate ]][[ .endDate ]][[ end ]]"
+)
+[[ end ]]
+[[ end ]]
+
+// ===== SKILLS =====
+[[ if .skills ]]
+#section("Skills")
+[[ range .skills ]]
+#skill("[[ .name ]]", ([[ range $idx, $val := .keywords ]][[ if $idx ]], [[ end ]]"[[ . ]]"[[ end ]]]))
+[[ end ]]
+[[ end ]]
+
+// ===== PROJECTS =====
+[[ if .projects ]]
+#section("Projects")
+[[ range .projects ]]
+*[[ .name ]]* [[ if .url ]]-- #link("[[ .url ]]")[[[ .url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]]][[ end ]]
+
+[[ if .description ]]
+[[ .description ]]
+[[ end ]]
+
+[[ if .highlights ]]
+[[ range .highlights ]]
+- [[ . ]]
+[[ end ]]
+[[ end ]]
+
+#v(6pt)
+[[ end ]]
+[[ end ]]
+
+// ===== AWARDS =====
+[[ if .awards ]]
+#section("Awards & Honors")
+[[ range .awards ]]
+*[[ .title ]]* -- [[ .awarder ]][[ if .date ]] ([[ .date ]])[[ end ]]
+
+[[ if .summary ]]
+[[ .summary ]]
+[[ end ]]
+
+#v(4pt)
+[[ end ]]
+[[ end ]]

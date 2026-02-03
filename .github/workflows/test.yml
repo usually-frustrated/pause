@@ -76,10 +76,12 @@ jobs:
           }
           EOF
 
-      - name: Test Pause Action (self-test)
+      - name: Test Pause Action (self-test with built-in templates)
         uses: ./
         with:
-          resume_file: 'resume.json'
+          resume_file: "resume.json"
           templates: |
-            github:pause-org/pause-template-minimal
+            minimal
+            modern
+            simple
           github_token: ${{ secrets.GITHUB_TOKEN }}

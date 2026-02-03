@@ -4,35 +4,35 @@
  * Orchestrates resume generation from resume.json using templates
  */
 
-import * as core from '@actions/core';
-import * as github from '@actions/github';
-import { readFile } from 'fs/promises';
-import { resolve } from 'path';
-import type { ActionInputs, ResumeData, BuildResult } from './types';
-import { parseTemplates, cloneTemplate, loadManifest } from './template';
-import { installBinaries, renderTemplate, buildTemplate } from './builder';
+import * as core from "@actions/core";
+import * as github from "@actions/github";
+import { readFile } from "fs/promises";
+import { resolve } from "path";
+import type { ActionInputs, ResumeData, BuildResult } from "./types";
+import { parseTemplates, resolveTemplate, loadManifest } from "./template";
+import { installBinaries, renderTemplate, buildTemplate } from "./builder";
 
 async function run(): Promise<void> {
   try {
     // 1. Get action inputs
     const inputs: ActionInputs = {
-      resumeFile: core.getInput('resume_file', { required: true }),
-      templates: core.getInput('templates', { required: true }),
-      githubToken: core.getInput('github_token', { required: true })
+      resumeFile: core.getInput("resume_file", { required: true }),
+      templates: core.getInput("templates", { required: true }),
+      githubToken: core.getInput("github_token", { required: true }),
     };
 
-    core.info('🎬 Starting Pause Action...');
+    core.info("🎬 Starting Pause Action...");
     core.info(`Resume file: ${inputs.resumeFile}`);
 
     // 2. Load resume.json
     const resumePath = resolve(process.cwd(), inputs.resumeFile);
-    const resumeContent = await readFile(resumePath, 'utf-8');
+    const resumeContent = await readFile(resumePath, "utf-8");
     const resumeData: ResumeData = JSON.parse(resumeContent);
 
-    core.info(`✅ Loaded resume for: ${resumeData.basics?.name || 'Unknown'}`);
+    core.info(`✅ Loaded resume for: ${resumeData.basics?.name || "Unknown"}`);
 
     // 3. Install required binaries (Gomplate, Tectonic, Typst)
-    core.startGroup('📦 Installing build tools');
+    core.startGroup("📦 Installing build tools");
     await installBinaries();
     core.endGroup();
 
@@ -47,9 +47,12 @@ async function run(): Promise<void> {
       core.startGroup(`🔨 Processing template: ${templateUrl}`);
 
       try {
-        // Clone template
-        const templatePath = await cloneTemplate(templateUrl, inputs.githubToken);
-        core.info(`✅ Cloned to: ${templatePath}`);
+        // Resolve template (built-in or clone external)
+        const templatePath = await resolveTemplate(
+          templateUrl,
+          inputs.githubToken,
+        );
+        core.info(`✅ Template path: ${templatePath}`);
 
         // Load manifest
         const manifest = await loadManifest(templatePath);
@@ -59,31 +62,28 @@ async function run(): Promise<void> {
         const renderedPath = await renderTemplate(
           templatePath,
           manifest,
-          resumeData
+          resumeData,
         );
         core.info(`✅ Rendered: ${renderedPath}`);
 
         // Build output (PDF/HTML)
-        const outputPath = await buildTemplate(
-          renderedPath,
-          manifest
-        );
+        const outputPath = await buildTemplate(renderedPath, manifest);
         core.info(`✅ Built: ${outputPath}`);
 
         results.push({
           template: templateUrl,
           outputPath,
-          success: true
+          success: true,
         });
-
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
         core.error(`❌ Failed to process ${templateUrl}: ${errorMessage}`);
         results.push({
           template: templateUrl,
-          outputPath: '',
+          outputPath: "",
           success: false,
-          error: errorMessage
+          error: errorMessage,
         });
       }
 
@@ -91,33 +91,32 @@ async function run(): Promise<void> {
     }
 
     // 6. Summary
-    core.startGroup('📊 Build Summary');
-    const successful = results.filter(r => r.success);
-    const failed = results.filter(r => !r.success);
+    core.startGroup("📊 Build Summary");
+    const successful = results.filter((r) => r.success);
+    const failed = results.filter((r) => !r.success);
 
     core.info(`✅ Successful: ${successful.length}`);
     core.info(`❌ Failed: ${failed.length}`);
 
     if (successful.length > 0) {
-      core.info('\nGenerated artifacts:');
-      successful.forEach(r => core.info(`  - ${r.outputPath}`));
+      core.info("\nGenerated artifacts:");
+      successful.forEach((r) => core.info(`  - ${r.outputPath}`));
     }
 
     core.endGroup();
 
     // 7. Set outputs
-    core.setOutput('artifacts', successful.map(r => r.outputPath).join(','));
-    core.setOutput('success_count', successful.length);
-    core.setOutput('failure_count', failed.length);
+    core.setOutput("artifacts", successful.map((r) => r.outputPath).join(","));
+    core.setOutput("success_count", successful.length);
+    core.setOutput("failure_count", failed.length);
 
     if (failed.length > 0 && successful.length === 0) {
-      core.setFailed('All templates failed to build');
+      core.setFailed("All templates failed to build");
     } else if (failed.length > 0) {
       core.warning(`${failed.length} template(s) failed to build`);
     }
 
-    core.info('🎉 Pause Action completed!');
-
+    core.info("🎉 Pause Action completed!");
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     core.setFailed(`Action failed: ${errorMessage}`);

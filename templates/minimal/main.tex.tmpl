@@ -1,0 +1,147 @@
+% Minimal Professional Resume Template
+% Generated with Pause Action
+\documentclass[11pt,letterpaper]{article}
+
+% Packages
+\usepackage[margin=0.75in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+% Formatting
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=*, noitemsep, topsep=0pt}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+
+% Colors
+\definecolor{linkcolor}{RGB}{0,102,204}
+\hypersetup{
+    colorlinks=true,
+    urlcolor=linkcolor,
+    linkcolor=linkcolor
+}
+
+% Custom commands
+\newcommand{\name}[1]{\begin{center}\textbf{\huge #1}\end{center}}
+\newcommand{\contact}[1]{\begin{center}#1\end{center}\vspace{6pt}}
+\newcommand{\jobheader}[4]{\textbf{#1} \hfill #2\\
+\textit{#3} \hfill \textit{#4}}
+\newcommand{\educationheader}[4]{\textbf{#1} \hfill #2\\
+#3 \hfill #4}
+
+\begin{document}
+
+% ===== HEADER =====
+[[ if .basics ]]
+\name{[[ .basics.name ]]}
+
+\contact{
+  [[ if .basics.email ]][[ .basics.email ]][[ end ]]
+  [[ if and .basics.email .basics.phone ]] $\mid$ [[ end ]]
+  [[ if .basics.phone ]][[ .basics.phone ]][[ end ]]
+  [[ if and (or .basics.email .basics.phone) .basics.url ]] $\mid$ [[ end ]]
+  [[ if .basics.url ]]\href{[[ .basics.url ]]}{[[ .basics.url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]]}[[ end ]]
+  [[ if .basics.location ]]
+    [[ if or .basics.email .basics.phone .basics.url ]] $\mid$ [[ end ]]
+    [[ .basics.location.city ]][[ if .basics.location.region ]], [[ .basics.location.region ]][[ end ]]
+  [[ end ]]
+}
+[[ end ]]
+
+% ===== SUMMARY =====
+[[ if .basics.summary ]]
+\section{Summary}
+[[ .basics.summary ]]
+[[ end ]]
+
+% ===== EXPERIENCE =====
+[[ if .work ]]
+\section{Experience}
+[[ range .work ]]
+\jobheader{[[ .name ]]}{[[ .startDate | strings.ReplaceAll "-" "/" ]]}%
+{[[ .position ]]}%
+{[[ if .endDate ]][[ .endDate | strings.ReplaceAll "-" "/" ]][[ else ]]Present[[ end ]]}
+
+[[ if .summary ]]
+[[ .summary ]]
+[[ end ]]
+
+[[ if .highlights ]]
+\begin{itemize}
+[[ range .highlights ]]
+  \item [[ . ]]
+[[ end ]]
+\end{itemize}
+[[ end ]]
+
+\vspace{6pt}
+[[ end ]]
+[[ end ]]
+
+% ===== EDUCATION =====
+[[ if .education ]]
+\section{Education}
+[[ range .education ]]
+\educationheader{[[ .institution ]]}%
+{[[ if .endDate ]][[ .endDate | strings.ReplaceAll "-" "/" ]][[ end ]]}%
+{[[ .studyType ]][[ if .area ]] in [[ .area ]][[ end ]]}%
+{[[ if .score ]]GPA: [[ .score ]][[ end ]]}
+
+[[ if .courses ]]
+\textit{Relevant Courses:} [[ .courses | strings.Join ", " ]]
+[[ end ]]
+
+\vspace{6pt}
+[[ end ]]
+[[ end ]]
+
+% ===== SKILLS =====
+[[ if .skills ]]
+\section{Skills}
+[[ range .skills ]]
+\textbf{[[ .name ]]:} [[ .keywords | strings.Join ", " ]]\\
+[[ end ]]
+[[ end ]]
+
+% ===== PROJECTS =====
+[[ if .projects ]]
+\section{Projects}
+[[ range .projects ]]
+\textbf{[[ .name ]]}[[ if .url ]] -- \href{[[ .url ]]}{[[ .url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]]}[[ end ]]
+
+[[ if .description ]]
+[[ .description ]]
+[[ end ]]
+
+[[ if .highlights ]]
+\begin{itemize}
+[[ range .highlights ]]
+  \item [[ . ]]
+[[ end ]]
+\end{itemize}
+[[ end ]]
+
+\vspace{6pt}
+[[ end ]]
+[[ end ]]
+
+% ===== AWARDS =====
+[[ if .awards ]]
+\section{Awards \& Honors}
+[[ range .awards ]]
+\textbf{[[ .title ]]} -- [[ .awarder ]][[ if .date ]] ([[ .date | strings.ReplaceAll "-" "/" ]])[[ end ]]
+
+[[ if .summary ]]
+[[ .summary ]]
+[[ end ]]
+
+\vspace{4pt}
+[[ end ]]
+[[ end ]]
+
+\end{document}

@@ -1,0 +1,6 @@
+name: "Minimal Professional"
+type: "latex"
+entrypoint: "main.tex.tmpl"
+output_name: "resume"
+delimiters: ["[[", "]]"]
+description: "Clean, minimal single-column resume with classic typography"

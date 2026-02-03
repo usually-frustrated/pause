@@ -1,0 +1,6 @@
+name: "Modern Typst"
+type: "typst"
+entrypoint: "main.typ.tmpl"
+output_name: "resume"
+delimiters: ["[[", "]]"]
+description: "Modern two-column resume with accent colors and icons"

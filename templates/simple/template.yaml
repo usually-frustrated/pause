@@ -1,0 +1,6 @@
+name: "Simple Web"
+type: "html"
+entrypoint: "index.html.tmpl"
+output_name: "resume"
+delimiters: ["[[", "]]"]
+description: "Clean, responsive HTML resume for web deployment"
