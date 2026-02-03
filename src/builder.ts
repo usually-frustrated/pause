@@ -66,12 +66,22 @@ export async function installBinaries(): Promise<void> {
       if (binary.url.endsWith('.tar.gz')) {
         const extractPath = await tc.extractTar(downloadPath);
         toolPath = join(extractPath, binary.extractDir);
+        core.info(`Debug: extractPath=${extractPath}, extractDir=${binary.extractDir}, toolPath=${toolPath}`);
       } else if (binary.url.endsWith('.tar.xz')) {
         const extractPath = await tc.extractTar(downloadPath, undefined, 'x');
         toolPath = join(extractPath, binary.extractDir);
+        core.info(`Debug: extractPath=${extractPath}, extractDir=${binary.extractDir}, toolPath=${toolPath}`);
       } else {
         throw new Error(`Unsupported archive format: ${binary.url}`);
       }
+      
+      try {
+        const stats = await import('fs/promises').then(fs => fs.stat(toolPath));
+        core.info(`Debug: toolPath exists, isDirectory=${stats.isDirectory()}`);
+      } catch (e) {
+         core.info(`Debug: toolPath does not exist or error: ${e}`);
+      }
+
     } else {
       // Single binary file
       // Use a specific directory for this tool to avoid caching unrelated files
