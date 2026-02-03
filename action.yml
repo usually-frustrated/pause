@@ -1,19 +1,39 @@
-name: 'Pause Action'
-description: 'Orchestrates resume generation using Bun and TypeScript'
-author: 'sushruth'
+name: "Pause Action"
+description: "Orchestrates resume generation using Bun and TypeScript"
+author: "sushruth"
 inputs:
   resume_file:
-    description: 'Path to the resume.json file (e.g., .github/resume.json)'
+    description: "Path to the resume.json file (e.g., .github/resume.json)"
     required: true
     type: string
   templates:
-    description: 'Comma-separated list of template repository URLs (e.g., github.com/sushruth/pause-template-latex)'
+    description: "Comma-separated list of template repository URLs (e.g., github.com/sushruth/pause-template-latex)"
     required: true
     type: string
   github_token:
-    description: 'GitHub token for API access (used to clone templates)'
+    description: "GitHub token for API access (used to clone templates)"
     required: true
     type: string
 runs:
-  using: 'node18'
-  main: 'src/index.ts'
+  using: "composite"
+  steps:
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: latest
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}
+        bun install
+
+    - name: Run Pause Action
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}
+        bun run src/index.ts
+      env:
+        INPUT_RESUME_FILE: ${{ inputs.resume_file }}
+        INPUT_TEMPLATES: ${{ inputs.templates }}
+        INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}

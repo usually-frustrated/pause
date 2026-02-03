@@ -1,0 +1,85 @@
+name: Test Pause Action
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Type check
+        run: bun run typecheck
+
+      - name: Create test resume.json
+        run: |
+          cat > resume.json <<'EOF'
+          {
+            "basics": {
+              "name": "John Doe",
+              "label": "Software Engineer",
+              "email": "john@example.com",
+              "phone": "(555) 123-4567",
+              "url": "https://johndoe.dev",
+              "summary": "Experienced software engineer with a passion for building elegant solutions.",
+              "location": {
+                "city": "San Francisco",
+                "countryCode": "US",
+                "region": "California"
+              }
+            },
+            "work": [
+              {
+                "name": "Tech Corp",
+                "position": "Senior Engineer",
+                "startDate": "2020-01-01",
+                "endDate": "2024-01-01",
+                "summary": "Led development of cloud infrastructure",
+                "highlights": [
+                  "Architected microservices platform",
+                  "Reduced deployment time by 50%"
+                ]
+              }
+            ],
+            "education": [
+              {
+                "institution": "University of Example",
+                "area": "Computer Science",
+                "studyType": "Bachelor",
+                "startDate": "2012-09-01",
+                "endDate": "2016-05-01"
+              }
+            ],
+            "skills": [
+              {
+                "name": "Backend Development",
+                "keywords": ["Python", "Go", "TypeScript"]
+              }
+            ]
+          }
+          EOF
+
+      - name: Test Pause Action (self-test)
+        uses: ./
+        with:
+          resume_file: 'resume.json'
+          templates: |
+            github:pause-org/pause-template-minimal
+          github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,206 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Jane Developer",
+    "label": "Full Stack Software Engineer",
+    "image": "",
+    "email": "jane@example.com",
+    "phone": "(555) 987-6543",
+    "url": "https://janedeveloper.dev",
+    "summary": "Passionate software engineer with 8 years of experience building scalable web applications and distributed systems. Strong expertise in cloud architecture, DevOps, and full-stack development.",
+    "location": {
+      "address": "123 Tech Street",
+      "postalCode": "94105",
+      "city": "San Francisco",
+      "countryCode": "US",
+      "region": "California"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "janedev",
+        "url": "https://github.com/janedev"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "janedeveloper",
+        "url": "https://linkedin.com/in/janedeveloper"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "CloudTech Solutions",
+      "position": "Senior Software Engineer",
+      "url": "https://cloudtech.example",
+      "startDate": "2020-06-01",
+      "summary": "Leading backend development for cloud-native applications serving 10M+ users",
+      "highlights": [
+        "Architected microservices platform reducing deployment time by 60%",
+        "Led team of 5 engineers in building real-time data processing pipeline",
+        "Reduced infrastructure costs by 40% through optimization and autoscaling",
+        "Implemented CI/CD pipelines using GitHub Actions and ArgoCD"
+      ]
+    },
+    {
+      "name": "StartupCo",
+      "position": "Full Stack Developer",
+      "url": "https://startupco.example",
+      "startDate": "2018-03-01",
+      "endDate": "2020-05-31",
+      "summary": "Built MVP and scaled product from 0 to 100k users",
+      "highlights": [
+        "Developed React-based SaaS platform with TypeScript and Node.js",
+        "Implemented real-time collaboration features using WebSockets",
+        "Designed PostgreSQL database schema and optimized complex queries",
+        "Created comprehensive test suite achieving 85% code coverage"
+      ]
+    },
+    {
+      "name": "Tech Consulting Group",
+      "position": "Software Developer",
+      "url": "https://techconsult.example",
+      "startDate": "2016-01-01",
+      "endDate": "2018-02-28",
+      "summary": "Consulted for Fortune 500 clients on digital transformation projects",
+      "highlights": [
+        "Developed custom enterprise applications using Java and Spring Boot",
+        "Migrated legacy systems to cloud infrastructure (AWS)",
+        "Collaborated with cross-functional teams across 3 time zones",
+        "Received 'Excellence in Delivery' award for on-time project completion"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Stanford University",
+      "url": "https://stanford.edu",
+      "area": "Computer Science",
+      "studyType": "Master of Science",
+      "startDate": "2014-09-01",
+      "endDate": "2016-06-01",
+      "score": "3.9",
+      "courses": [
+        "Distributed Systems",
+        "Machine Learning",
+        "Advanced Algorithms"
+      ]
+    },
+    {
+      "institution": "UC Berkeley",
+      "url": "https://berkeley.edu",
+      "area": "Computer Science",
+      "studyType": "Bachelor of Science",
+      "startDate": "2010-09-01",
+      "endDate": "2014-05-01",
+      "score": "3.8",
+      "courses": [
+        "Data Structures",
+        "Operating Systems",
+        "Computer Networks"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "Backend Development",
+      "level": "Expert",
+      "keywords": [
+        "Node.js",
+        "Python",
+        "Go",
+        "Java",
+        "TypeScript"
+      ]
+    },
+    {
+      "name": "Frontend Development",
+      "level": "Advanced",
+      "keywords": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "Vue.js",
+        "HTML/CSS"
+      ]
+    },
+    {
+      "name": "Cloud & DevOps",
+      "level": "Expert",
+      "keywords": [
+        "AWS",
+        "Kubernetes",
+        "Docker",
+        "Terraform",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "name": "Databases",
+      "level": "Advanced",
+      "keywords": [
+        "PostgreSQL",
+        "MongoDB",
+        "Redis",
+        "Elasticsearch"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Open Source Monitoring Tool",
+      "description": "Created a lightweight monitoring solution for Kubernetes clusters",
+      "highlights": [
+        "10k+ GitHub stars",
+        "Featured in CNCF landscape",
+        "Active community of 50+ contributors"
+      ],
+      "keywords": [
+        "Go",
+        "Kubernetes",
+        "Prometheus"
+      ],
+      "startDate": "2021-01-01",
+      "url": "https://github.com/janedev/k8s-monitor",
+      "roles": [
+        "Creator",
+        "Lead Maintainer"
+      ],
+      "type": "application"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Tech Innovator of the Year",
+      "date": "2022-11-01",
+      "awarder": "Bay Area Tech Awards",
+      "summary": "Recognized for contributions to cloud infrastructure tooling"
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native speaker"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Professional working proficiency"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Open Source",
+      "keywords": [
+        "Contributing to CNCF projects",
+        "Building developer tools"
+      ]
+    },
+    {
+      "name": "Technical Writing",
+      "keywords": [
+        "Blog about distributed systems",
+        "Conference speaking"
+      ]
+    }
+  ]
+}

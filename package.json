@@ -1,0 +1,32 @@
+{
+  "name": "@pause-org/action",
+  "version": "0.1.0",
+  "description": "GitHub Action to orchestrate resume generation from resume.json using templates",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "bun build src/index.ts --outdir=dist --target=node",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "resume",
+    "github-action",
+    "gomplate",
+    "latex",
+    "typst"
+  ],
+  "author": "sushruth",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^6.0.0",
+    "@actions/tool-cache": "^2.0.1",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.3.3"
+  }
+}
