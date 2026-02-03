@@ -12,351 +12,329 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       line-height: 1.6;
       color: #333;
-      background: #f5f5f5;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 900px;
+      background: #fff;
+      padding: 2em;
+      max-width: 8.5in;
       margin: 0 auto;
-      background: white;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      overflow: hidden;
     }
 
-    header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 40px;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    header .subtitle {
-      font-size: 1.2em;
-      opacity: 0.9;
-      margin-bottom: 15px;
-    }
-
-    header .contact {
-      font-size: 0.95em;
-      opacity: 0.85;
-    }
-
-    header .contact a {
-      color: white;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255,255,255,0.3);
-    }
-
-    header .contact a:hover {
-      border-bottom-color: white;
-    }
-
-    main {
-      padding: 40px;
-    }
-
-    section {
-      margin-bottom: 35px;
-    }
-
-    section:last-child {
-      margin-bottom: 0;
+    h1 {
+      font-size: 2.2em;
+      margin: 0;
+      font-weight: normal;
     }
 
     h2 {
-      color: #667eea;
-      font-size: 1.5em;
-      margin-bottom: 15px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #667eea;
+      font-size: 1.3em;
+      margin: 1.5em 0 0.8em 0;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.3em;
     }
 
-    .summary {
-      font-size: 1.05em;
-      color: #555;
-      line-height: 1.8;
-    }
-
-    .job, .education-item, .project {
-      margin-bottom: 25px;
-    }
-
-    .job-header, .education-header, .project-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-
-    .job-title, .degree, .project-name {
+    h3 {
       font-size: 1.1em;
-      font-weight: 600;
-      color: #333;
+      margin: 0.5em 0;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.3em;
     }
 
-    .company, .institution {
-      font-weight: 600;
-      color: #667eea;
+    a {
+      color: #0066cc;
+      text-decoration: none;
     }
 
-    .date {
-      color: #888;
-      font-size: 0.9em;
-      white-space: nowrap;
+    a:hover {
+      text-decoration: underline;
     }
 
-    .position, .field {
-      color: #666;
-      font-style: italic;
-      margin-bottom: 8px;
+    p {
+      margin: 0.3em 0;
     }
 
     ul {
-      margin-left: 20px;
-      margin-top: 8px;
+      margin: 0.3em 0;
+      padding-left: 1.5em;
     }
 
     li {
-      margin-bottom: 5px;
-      color: #555;
+      margin-bottom: 0.2em;
     }
 
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-    }
-
-    .skill-category {
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 6px;
-      border-left: 3px solid #667eea;
-    }
-
-    .skill-category h3 {
-      font-size: 1em;
-      margin-bottom: 8px;
-      color: #667eea;
-    }
-
-    .skill-tags {
+    .header {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5em;
     }
 
-    .skill-tag {
-      background: white;
-      padding: 4px 12px;
-      border-radius: 15px;
-      font-size: 0.9em;
-      border: 1px solid #ddd;
-    }
-
-    .award {
-      margin-bottom: 15px;
-    }
-
-    .award-title {
-      font-weight: 600;
-      color: #333;
-    }
-
-    .award-org {
-      color: #667eea;
+    .header-left,
+    .header-right {
+      flex: 0 0 20%;
       font-size: 0.95em;
+    }
+
+    .header-left {
+      text-align: left;
+    }
+
+    .header-center {
+      flex: 0 0 60%;
+      text-align: center;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    .header-left div,
+    .header-right div {
+      margin: 0.2em 0;
+    }
+
+    .experience-group {
+      margin-bottom: 1.5em;
+    }
+
+    .experience-role {
+      margin-bottom: 1em;
+    }
+
+    .experience-role:not(:last-child) {
+      border-bottom: 1px dashed #eee;
+      padding-bottom: 0.8em;
+    }
+
+    .role-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      margin-bottom: 0.3em;
+    }
+
+    .role-date {
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    .company-location {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 0.5em;
+    }
+
+    .education-item {
+      margin-bottom: 1em;
+    }
+
+    .education-header {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5em 0;
+    }
+
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-top: 1px dashed rgba(0, 0, 0, 0.3);
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
+    }
+
+    .skills-table tr:not(:last-child) {
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
+    }
+
+    .skills-table td {
+      vertical-align: top;
+      padding: 0.6em 0;
+    }
+
+    .skill-name {
+      width: 28%;
+      font-weight: bold;
+      padding-right: 1.5em;
+      text-align: left;
+    }
+
+    .skill-keywords {
+      width: 68%;
+      font-size: 0.9em;
+      text-align: left;
+    }
+
+    .publication {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5em;
     }
 
     @media print {
       body {
-        background: white;
         padding: 0;
-      }
-
-      .container {
-        box-shadow: none;
-        border-radius: 0;
-      }
-
-      header {
-        background: #667eea;
       }
     }
 
     @media (max-width: 600px) {
-      header h1 {
-        font-size: 2em;
-      }
-
-      main {
-        padding: 25px;
-      }
-
-      .job-header, .education-header, .project-header {
+      .header {
         flex-direction: column;
-        align-items: flex-start;
+      }
+
+      .header-left,
+      .header-center,
+      .header-right {
+        flex: 1 1 100%;
+        text-align: center;
+        margin: 0.5em 0;
+      }
+
+      .role-header,
+      .education-header,
+      .publication {
+        flex-direction: column;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    [[ if .basics ]]
-    <header>
-      <h1>[[ .basics.name ]]</h1>
-      [[ if .basics.label ]]
-      <div class="subtitle">[[ .basics.label ]]</div>
+
+  [[ if .basics ]]
+  <!-- Header Section -->
+  [[ $locationStr := "" ]]
+  [[ if .basics.location ]]
+    [[ if and .basics.location.city .basics.location.region ]]
+      [[ $locationStr = printf "%s, %s" .basics.location.city .basics.location.region ]]
+    [[ else if .basics.location.city ]]
+      [[ $locationStr = .basics.location.city ]]
+    [[ else if .basics.location.region ]]
+      [[ $locationStr = .basics.location.region ]]
+    [[ end ]]
+  [[ end ]]
+
+  [[ $githubUsername := "" ]]
+  [[ $linkedinUsername := "" ]]
+  [[ if .basics.profiles ]]
+    [[ range .basics.profiles ]]
+      [[ if eq .network "GitHub" ]]
+        [[ $githubUsername = .username ]]
       [[ end ]]
-      <div class="contact">
-        [[ if .basics.email ]]
-        <a href="mailto:[[ .basics.email ]]">[[ .basics.email ]]</a>
+      [[ if eq .network "LinkedIn" ]]
+        [[ $linkedinUsername = .username ]]
+      [[ end ]]
+    [[ end ]]
+  [[ end ]]
+
+  <div class="header">
+    <div class="header-left">
+      [[ if .basics.phone ]]<div>[[ .basics.phone ]]</div>[[ end ]]
+      [[ if $locationStr ]]<div>[[ $locationStr ]]</div>[[ end ]]
+      [[ if .basics.email ]]<div><a href="mailto:[[ .basics.email ]]">[[ .basics.email ]]</a></div>[[ end ]]
+    </div>
+    <div class="header-center">
+      <h1>[[ .basics.name ]]</h1>
+      [[ if .basics.label ]]<div>[[ .basics.label ]]</div>[[ end ]]
+    </div>
+    <div class="header-right">
+      [[ if $githubUsername ]]
+        <div><a href="https://github.com/[[ $githubUsername ]]">GitHub: [[ $githubUsername ]]</a></div>
+      [[ end ]]
+      [[ if $linkedinUsername ]]
+        <div><a href="https://www.linkedin.com/in/[[ $linkedinUsername ]]">LinkedIn: [[ $linkedinUsername ]]</a></div>
+      [[ end ]]
+    </div>
+  </div>
+  [[ end ]]
+
+  <!-- Objective/Summary Section -->
+  [[ if .basics.summary ]]
+  <h2>Objective</h2>
+  <p>[[ .basics.summary ]]</p>
+  [[ end ]]
+
+  <!-- Experience Section -->
+  [[ if .work ]]
+  <h2>Experience</h2>
+  [[ range .work ]]
+    [[ $dateRange := printf "%s - %s" (.startDate | default "") (cond .endDate .endDate "Present") ]]
+    <div class="experience-group">
+      <h3>
+        [[ .name ]]
+        <span style="float: right; font-weight: normal; font-size: 0.9em;">[[ $dateRange ]]</span>
+      </h3>
+      [[ if .location ]]
+      <div class="company-location">[[ .location ]]</div>
+      [[ end ]]
+      <div class="experience-role">
+        <div class="role-header">
+          <span>[[ .position ]]</span>
+        </div>
+        [[ if .summary ]]
+        <p style="font-size: 0.95em;">[[ .summary ]]</p>
         [[ end ]]
-        [[ if and .basics.email .basics.phone ]] • [[ end ]]
-        [[ if .basics.phone ]]
-        <a href="tel:[[ .basics.phone ]]">[[ .basics.phone ]]</a>
-        [[ end ]]
-        [[ if and (or .basics.email .basics.phone) .basics.url ]] • [[ end ]]
-        [[ if .basics.url ]]
-        <a href="[[ .basics.url ]]" target="_blank">[[ .basics.url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]]</a>
-        [[ end ]]
-        [[ if .basics.location ]]
-        [[ if or .basics.email .basics.phone .basics.url ]] • [[ end ]]
-        [[ .basics.location.city ]][[ if .basics.location.region ]], [[ .basics.location.region ]][[ end ]]
+        [[ if .highlights ]]
+        <ul>
+          [[ range .highlights ]]
+          <li>[[ . ]]</li>
+          [[ end ]]
+        </ul>
         [[ end ]]
       </div>
-    </header>
+    </div>
+  [[ end ]]
+  [[ end ]]
+
+  <!-- Education Section -->
+  [[ if .education ]]
+  <h2>Education</h2>
+  [[ range .education ]]
+    [[ $degree := "" ]]
+    [[ if and .studyType .area ]]
+      [[ $degree = printf "%s in %s" .studyType .area ]]
+    [[ else if .studyType ]]
+      [[ $degree = .studyType ]]
+    [[ else if .area ]]
+      [[ $degree = .area ]]
     [[ end ]]
+    [[ $year := cond .endDate .endDate (.startDate | default "") ]]
+    <div class="education-item">
+      <h3 class="education-header">
+        <span>[[ $degree ]]</span>
+        <span>[[ $year ]]</span>
+      </h3>
+      <div style="font-size: 0.9em; color: #666;">[[ .institution ]]</div>
+    </div>
+  [[ end ]]
+  [[ end ]]
 
-    <main>
-      [[ if .basics.summary ]]
-      <section>
-        <h2>Summary</h2>
-        <p class="summary">[[ .basics.summary ]]</p>
-      </section>
+  <!-- Skills Section -->
+  [[ if .skills ]]
+  <h2>Skills</h2>
+  <table class="skills-table">
+    <tbody>
+      [[ range .skills ]]
+      <tr>
+        <td class="skill-name">[[ .name ]]</td>
+        <td class="skill-keywords">[[ .keywords | strings.Join ", " ]]</td>
+      </tr>
       [[ end ]]
+    </tbody>
+  </table>
+  [[ end ]]
 
-      [[ if .work ]]
-      <section>
-        <h2>Experience</h2>
-        [[ range .work ]]
-        <div class="job">
-          <div class="job-header">
-            <div>
-              <span class="company">[[ .name ]]</span>
-            </div>
-            <span class="date">[[ .startDate ]] – [[ if .endDate ]][[ .endDate ]][[ else ]]Present[[ end ]]</span>
-          </div>
-          <div class="position">[[ .position ]]</div>
-          [[ if .summary ]]
-          <p>[[ .summary ]]</p>
-          [[ end ]]
-          [[ if .highlights ]]
-          <ul>
-            [[ range .highlights ]]
-            <li>[[ . ]]</li>
-            [[ end ]]
-          </ul>
-          [[ end ]]
-        </div>
-        [[ end ]]
-      </section>
-      [[ end ]]
-
-      [[ if .education ]]
-      <section>
-        <h2>Education</h2>
-        [[ range .education ]]
-        <div class="education-item">
-          <div class="education-header">
-            <div>
-              <span class="institution">[[ .institution ]]</span>
-            </div>
-            <span class="date">[[ if .endDate ]][[ .endDate ]][[ end ]]</span>
-          </div>
-          <div class="field">[[ .studyType ]][[ if .area ]] in [[ .area ]][[ end ]][[ if .score ]] • GPA: [[ .score ]][[ end ]]</div>
-          [[ if .courses ]]
-          <p><em>Relevant Courses:</em> [[ .courses | strings.Join ", " ]]</p>
-          [[ end ]]
-        </div>
-        [[ end ]]
-      </section>
-      [[ end ]]
-
-      [[ if .skills ]]
-      <section>
-        <h2>Skills</h2>
-        <div class="skills-grid">
-          [[ range .skills ]]
-          <div class="skill-category">
-            <h3>[[ .name ]]</h3>
-            <div class="skill-tags">
-              [[ range .keywords ]]
-              <span class="skill-tag">[[ . ]]</span>
-              [[ end ]]
-            </div>
-          </div>
-          [[ end ]]
-        </div>
-      </section>
-      [[ end ]]
-
-      [[ if .projects ]]
-      <section>
-        <h2>Projects</h2>
-        [[ range .projects ]]
-        <div class="project">
-          <div class="project-header">
-            <span class="project-name">[[ .name ]]</span>
-            [[ if .url ]]
-            <a href="[[ .url ]]" target="_blank">[[ .url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]]</a>
-            [[ end ]]
-          </div>
-          [[ if .description ]]
-          <p>[[ .description ]]</p>
-          [[ end ]]
-          [[ if .highlights ]]
-          <ul>
-            [[ range .highlights ]]
-            <li>[[ . ]]</li>
-            [[ end ]]
-          </ul>
-          [[ end ]]
-        </div>
-        [[ end ]]
-      </section>
-      [[ end ]]
-
-      [[ if .awards ]]
-      <section>
-        <h2>Awards & Honors</h2>
-        [[ range .awards ]]
-        <div class="award">
-          <div>
-            <span class="award-title">[[ .title ]]</span> •
-            <span class="award-org">[[ .awarder ]]</span>
-            [[ if .date ]] • <span class="date">[[ .date ]]</span>[[ end ]]
-          </div>
-          [[ if .summary ]]
-          <p>[[ .summary ]]</p>
-          [[ end ]]
-        </div>
-        [[ end ]]
-      </section>
-      [[ end ]]
-    </main>
+  <!-- Publications Section -->
+  [[ if .publications ]]
+  <h2>Publications</h2>
+  [[ range .publications ]]
+  <div class="publication">
+    <div>
+      <a href="[[ .url ]]">[[ .name ]]</a>
+      [[ if .publisher ]]([[ .publisher ]])[[ end ]]
+    </div>
+    [[ if .releaseDate ]]<div>[[ .releaseDate ]]</div>[[ end ]]
   </div>
+  [[ end ]]
+  [[ end ]]
+
 </body>
 </html>

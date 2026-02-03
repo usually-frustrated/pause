@@ -1,6 +1,6 @@
-name: "Simple Web"
+name: "Simple Professional"
 type: "html"
 entrypoint: "index.html.tmpl"
 output_name: "resume"
 delimiters: ["[[", "]]"]
-description: "Clean, responsive HTML resume for web deployment"
+description: "Clean, professional HTML resume adapted from sushruth/resume - print-friendly with three-column header"
