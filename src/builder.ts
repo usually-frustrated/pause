@@ -136,7 +136,7 @@ export async function renderTemplate(
     '--datasource', `resume=${dataPath}`,
     '--left-delim', leftDelim,
     '--right-delim', rightDelim,
-    '--context', 'resume'
+    '--context', '.=resume'
   ];
 
   // Add custom functions based on template type

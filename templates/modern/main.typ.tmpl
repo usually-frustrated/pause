@@ -105,7 +105,7 @@
   "[[ .startDate ]]",
   "[[ if .endDate ]][[ .endDate ]][[ else ]]Present[[ end ]]",
   [[ if .highlights ]](
-    [[ range $idx, $val := .highlights ]][[ if $idx ]], [[ end ]]"[[ . ]]"[[ end ]]
+    [[ range $idx, $val := .highlights ]][[ if $idx ]], [[ end ]]"[[ $val ]]"[[ end ]]
   )[[ else ]]none[[ end ]]
 )
 [[ end ]]
@@ -129,7 +129,7 @@
 [[ if .skills ]]
 #section("Skills")
 [[ range .skills ]]
-#skill("[[ .name ]]", ([[ range $idx, $val := .keywords ]][[ if $idx ]], [[ end ]]"[[ . ]]"[[ end ]]]))
+#skill("[[ .name ]]", ([[ range $idx, $val := .keywords ]][[ if $idx ]], [[ end ]]"[[ $val ]]"[[ end ]]))
 [[ end ]]
 [[ end ]]
 

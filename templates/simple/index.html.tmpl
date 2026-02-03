@@ -256,7 +256,7 @@
   [[ if .work ]]
   <h2>Experience</h2>
   [[ range .work ]]
-    [[ $dateRange := printf "%s - %s" (.startDate | default "") (cond .endDate .endDate "Present") ]]
+    [[ $dateRange := printf "%s - %s" (.startDate | default "") (.endDate | default "Present") ]]
     <div class="experience-group">
       <h3>
         [[ .name ]]
