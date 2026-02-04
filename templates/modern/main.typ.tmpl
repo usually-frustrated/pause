@@ -68,10 +68,10 @@
 // ===== HEADER =====
 [[ if .basics ]]
 #align(center)[
-  #name-style[[[ .basics.name ]]]
+  #name-style[ [[ .basics.name ]] ]
 
   [[ if .basics.label ]]
-  #subtitle-style[[[ .basics.label ]]]
+  #subtitle-style[ [[ .basics.label ]] ]
   #v(4pt)
   [[ end ]]
 
@@ -80,7 +80,7 @@
     [[ if and .basics.email .basics.phone ]] • [[ end ]]
     [[ if .basics.phone ]][[ .basics.phone ]][[ end ]]
     [[ if and (or .basics.email .basics.phone) .basics.url ]] • [[ end ]]
-    [[ if .basics.url ]]#link("[[ .basics.url ]]")[[[ .basics.url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]]][[ end ]]
+    [[ if .basics.url ]]#link("[[ .basics.url ]]") [ [[ .basics.url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]] ] [[ end ]]
     [[ if .basics.location ]]
       [[ if or .basics.email .basics.phone .basics.url ]] • [[ end ]]
       [[ .basics.location.city ]][[ if .basics.location.region ]], [[ .basics.location.region ]][[ end ]]
@@ -137,7 +137,7 @@
 [[ if .projects ]]
 #section("Projects")
 [[ range .projects ]]
-*[[ .name ]]* [[ if .url ]]-- #link("[[ .url ]]")[[[ .url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]]][[ end ]]
+*[[ .name ]]* [[ if .url ]]-- #link("[[ .url ]]") [ [[ .url | strings.ReplaceAll "https://" "" | strings.ReplaceAll "http://" "" ]] ] [[ end ]]
 
 [[ if .description ]]
 [[ .description ]]

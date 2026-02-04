@@ -17,6 +17,7 @@ import {
   createGitHubRelease,
   deployToGitHubPages,
 } from "./release";
+import { prepareResumeData } from "./utils";
 
 async function run(): Promise<void> {
   try {
@@ -40,7 +41,8 @@ async function run(): Promise<void> {
     core.info(`Resume file: ${inputs.resumeFile}`);
 
     // 2. Load resume.json
-    const resumePath = resolve(process.cwd(), inputs.resumeFile);
+    const workspace = process.env.GITHUB_WORKSPACE || process.cwd();
+    const resumePath = resolve(workspace, inputs.resumeFile);
     const resumeContent = await readFile(resumePath, "utf-8");
     const resumeData: ResumeData = JSON.parse(resumeContent);
 
@@ -73,11 +75,14 @@ async function run(): Promise<void> {
         const manifest = await loadManifest(templatePath);
         core.info(`Template: ${manifest.name} (${manifest.type})`);
 
+        // Prepare data (escape based on template type)
+        const preparedData = prepareResumeData(resumeData, manifest.type);
+
         // Render template with Gomplate
         const renderedPath = await renderTemplate(
           templatePath,
           manifest,
-          resumeData,
+          preparedData,
         );
         core.info(`✅ Rendered: ${renderedPath}`);
 

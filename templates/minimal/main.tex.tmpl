@@ -93,7 +93,7 @@
 {[[ if .score ]]GPA: [[ .score ]][[ end ]]}
 
 [[ if .courses ]]
-\textit{Relevant Courses:} [[ .courses | strings.Join ", " ]]
+\textit{Relevant Courses:} [[ join .courses ", " ]]
 [[ end ]]
 
 \vspace{6pt}
@@ -104,7 +104,7 @@
 [[ if .skills ]]
 \section{Skills}
 [[ range .skills ]]
-\textbf{[[ .name ]]:} [[ .keywords | strings.Join ", " ]]\\
+\textbf{[[ .name ]]:} [[ join .keywords ", " ]]\\
 [[ end ]]
 [[ end ]]
 

@@ -296,7 +296,8 @@
     [[ else if .area ]]
       [[ $degree = .area ]]
     [[ end ]]
-    [[ $year := cond .endDate .endDate (.startDate | default "") ]]
+    [[ $year := .endDate ]]
+    [[ if not $year ]][[ $year = .startDate | default "" ]][[ end ]]
     <div class="education-item">
       <h3 class="education-header">
         <span>[[ $degree ]]</span>
@@ -315,7 +316,7 @@
       [[ range .skills ]]
       <tr>
         <td class="skill-name">[[ .name ]]</td>
-        <td class="skill-keywords">[[ .keywords | strings.Join ", " ]]</td>
+        <td class="skill-keywords">[[ join .keywords ", " ]]</td>
       </tr>
       [[ end ]]
     </tbody>

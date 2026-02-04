@@ -11,7 +11,7 @@ import type { TemplateManifest, ResumeData } from './types';
 import { escapeLatex, escapeHtml, escapeTypst } from './utils';
 
 const BIN_DIR = process.env.RUNNER_TEMP ? join(process.env.RUNNER_TEMP, 'pause-bin') : '/tmp/pause-bin';
-const OUTPUT_DIR = process.cwd();
+const OUTPUT_DIR = process.env.GITHUB_WORKSPACE || process.cwd();
 
 interface BinaryInfo {
   name: string;
@@ -25,25 +25,68 @@ interface BinaryInfo {
  * Uses GitHub Actions tool cache for caching
  */
 export async function installBinaries(): Promise<void> {
-  const binaries: BinaryInfo[] = [
-    {
+  const os = process.platform;
+  const arch = process.arch;
+
+  core.info(`Detected platform: ${os}, architecture: ${arch}`);
+
+  const binaries: BinaryInfo[] = [];
+
+  // 1. Gomplate
+  let gomplateUrl = "";
+  if (os === 'linux') {
+    gomplateUrl = `https://github.com/hairyhenderson/gomplate/releases/download/v4.3.0/gomplate_linux-${arch === 'arm64' ? 'arm64' : 'amd64'}`;
+  } else if (os === 'darwin') {
+    gomplateUrl = `https://github.com/hairyhenderson/gomplate/releases/download/v4.3.0/gomplate_darwin-${arch === 'arm64' ? 'arm64' : 'amd64'}`;
+  }
+
+  if (gomplateUrl) {
+    binaries.push({
       name: 'gomplate',
-      version: '3.11.6',
-      url: 'https://github.com/hairyhenderson/gomplate/releases/download/v3.11.6/gomplate_linux-amd64'
-    },
-    {
+      version: '4.3.0',
+      url: gomplateUrl
+    });
+  }
+
+  // 2. Tectonic
+  let tectonicUrl = "";
+  let tectonicExtractDir = ".";
+  if (os === 'linux') {
+    tectonicUrl = `https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-${arch === 'arm64' ? 'aarch64' : 'x86_64'}-unknown-linux-musl.tar.gz`;
+  } else if (os === 'darwin') {
+    tectonicUrl = `https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-${arch === 'arm64' ? 'aarch64' : 'x86_64'}-apple-darwin.tar.gz`;
+  }
+
+  if (tectonicUrl) {
+    binaries.push({
       name: 'tectonic',
       version: '0.15.0',
-      url: 'https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.15.0/tectonic-0.15.0-x86_64-unknown-linux-musl.tar.gz',
-      extractDir: '.'
-    },
-    {
+      url: tectonicUrl,
+      extractDir: tectonicExtractDir
+    });
+  }
+
+  // 3. Typst
+  let typstUrl = "";
+  let typstExtractDir = "";
+  if (os === 'linux') {
+    const tArch = arch === 'arm64' ? 'aarch64' : 'x86_64';
+    typstUrl = `https://github.com/typst/typst/releases/download/v0.11.0/typst-${tArch}-unknown-linux-musl.tar.xz`;
+    typstExtractDir = `typst-${tArch}-unknown-linux-musl`;
+  } else if (os === 'darwin') {
+    const tArch = arch === 'arm64' ? 'aarch64-apple-darwin' : 'x86_64-apple-darwin';
+    typstUrl = `https://github.com/typst/typst/releases/download/v0.11.0/typst-${tArch}.tar.xz`;
+    typstExtractDir = `typst-${tArch}`;
+  }
+
+  if (typstUrl) {
+    binaries.push({
       name: 'typst',
       version: '0.11.0',
-      url: 'https://github.com/typst/typst/releases/download/v0.11.0/typst-x86_64-unknown-linux-musl.tar.xz',
-      extractDir: 'typst-x86_64-unknown-linux-musl'
-    }
-  ];
+      url: typstUrl,
+      extractDir: typstExtractDir
+    });
+  }
 
   await mkdir(BIN_DIR, { recursive: true });
 
@@ -74,12 +117,12 @@ export async function installBinaries(): Promise<void> {
       } else {
         throw new Error(`Unsupported archive format: ${binary.url}`);
       }
-      
+
       try {
         const stats = await import('fs/promises').then(fs => fs.stat(toolPath));
         core.info(`Debug: toolPath exists, isDirectory=${stats.isDirectory()}`);
       } catch (e) {
-         core.info(`Debug: toolPath does not exist or error: ${e}`);
+        core.info(`Debug: toolPath does not exist or error: ${e}`);
       }
 
     } else {
@@ -135,12 +178,9 @@ export async function renderTemplate(
     '--out', outputPath,
     '--left-delim', leftDelim,
     '--right-delim', rightDelim,
+    '--missing-key', 'zero',
     '--context', `.=${dataPath}`
   ];
-
-  // Add custom functions based on template type
-  // Note: Gomplate supports plugin functions, but for simplicity we'll do pre/post processing
-  // Alternative: Use Gomplate's built-in functions or create a plugin
 
   await exec.exec('gomplate', args);
 
@@ -182,9 +222,15 @@ export async function buildTemplate(
 
     case 'html':
     case 'markdown':
-      // No build step needed - already rendered
-      core.info(`Static output: ${renderedPath}`);
-      return renderedPath;
+      // Move/rename rendered file to match output_name
+      // The renderedPath is join(OUTPUT_DIR, basename(manifest.entrypoint).replace('.tmpl', ''))
+      // We want it at join(OUTPUT_DIR, `${manifest.output_name}.${getOutputExtension(manifest.type)}`)
+      if (renderedPath !== outputPath) {
+        core.info(`Renaming static output: ${renderedPath} -> ${outputPath}`);
+        const fs = await import('fs/promises');
+        await fs.rename(renderedPath, outputPath);
+      }
+      return outputPath;
 
     default:
       throw new Error(`Unsupported template type: ${manifest.type}`);
@@ -204,6 +250,14 @@ async function buildLatex(inputPath: string, outputPath: string): Promise<void> 
     inputPath,
     '--outdir', dirname(outputPath)
   ]);
+
+  // Rename Tectonic output if it doesn't match outputPath
+  const tectonicExpectedOutput = join(dirname(inputPath), basename(inputPath).replace(extname(inputPath), '.pdf'));
+  if (tectonicExpectedOutput !== outputPath) {
+    core.info(`Renaming Tectonic output: ${tectonicExpectedOutput} -> ${outputPath}`);
+    const fs = await import('fs/promises');
+    await fs.rename(tectonicExpectedOutput, outputPath);
+  }
 }
 
 /**

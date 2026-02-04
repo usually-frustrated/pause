@@ -1,0 +1,43 @@
+{
+  "basics": {
+    "name": "Test User",
+    "label": "Tester",
+    "email": "test\\@example.com",
+    "phone": "123-4567",
+    "url": "https://example.com",
+    "summary": "A test user",
+    "location": {
+      "city": "Test City",
+      "region": "Test State"
+    }
+  },
+  "work": [
+    {
+      "name": "Test Co",
+      "position": "Tester",
+      "startDate": "2020-01-01",
+      "summary": "Testing stuff",
+      "highlights": [
+        "Did some tests"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Test U",
+      "area": "Testing",
+      "studyType": "Bachelor",
+      "endDate": "2016-01-01"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Testing",
+      "keywords": [
+        "Jest",
+        "Bun",
+        "Actions"
+      ]
+    }
+  ]
+}

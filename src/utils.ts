@@ -1,4 +1,8 @@
+import { ResumeData } from './types';
+
 /**
+
+import { ResumeData } from "./types";
  * Utility functions for sanitization and helpers
  */
 
@@ -80,11 +84,40 @@ export function joinArray(items: string[] | undefined, separator = ', '): string
 }
 
 /**
- * Check if a value is present and not empty
+ * Deeply escape strings in an object
  */
-export function isPresent(value: any): boolean {
-  if (value === null || value === undefined) return false;
-  if (typeof value === 'string') return value.trim().length > 0;
-  if (Array.isArray(value)) return value.length > 0;
-  return true;
+export function deepEscape(data: any, escapeFn: (text: string) => string): any {
+  if (typeof data === 'string') {
+    return escapeFn(data);
+  }
+
+  if (Array.isArray(data)) {
+    return data.map(item => deepEscape(item, escapeFn));
+  }
+
+  if (typeof data === 'object' && data !== null) {
+    const result: any = {};
+    for (const key in data) {
+      result[key] = deepEscape(data[key], escapeFn);
+    }
+    return result;
+  }
+
+  return data;
+}
+
+/**
+ * Prepare resume data for a specific template type
+ */
+export function prepareResumeData(data: ResumeData, type: string): ResumeData {
+  switch (type) {
+    case 'latex':
+      return deepEscape(data, escapeLatex);
+    case 'typst':
+      return deepEscape(data, escapeTypst);
+    case 'html':
+      return deepEscape(data, escapeHtml);
+    default:
+      return data;
+  }
 }
