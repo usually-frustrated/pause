@@ -11,7 +11,8 @@ export interface ActionInputs {
   changelogSource: "commits" | "file" | "manual";
   changelogFile?: string;
   changelogText?: string;
-  deployGithubPages: string;
+  deployGithubPages: boolean;
+  artifactNameTemplate?: string;
 }
 
 export interface TemplateManifest {

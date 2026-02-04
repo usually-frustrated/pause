@@ -6,6 +6,34 @@ import { ResumeData } from "./types";
  * Utility functions for sanitization and helpers
  */
 
+import type { ResumeData } from "./types";
+
+/**
+ * Parse artifact name template string with placeholders
+ * Supported placeholders:
+ * - {name} - Name from resume JSON
+ * - {yyyy} - Current year (4 digits)
+ * - {MMM} - Current month (3-letter abbreviation)
+ */
+export function parseArtifactNameTemplate(
+  template: string | undefined,
+  resumeData: ResumeData,
+  date: Date = new Date(),
+): string {
+  if (!template) {
+    return "resume";
+  }
+
+  const name = resumeData.basics?.name || "Unknown";
+  const year = date.getFullYear().toString();
+  const month = date.toLocaleDateString("en-US", { month: "short" });
+
+  return template
+    .replace(/{name}/g, name)
+    .replace(/{yyyy}/g, year)
+    .replace(/{MMM}/g, month);
+}
+
 /**
  * Escape special LaTeX characters
  * Characters that need escaping: & % $ # _ { } ~ ^ \

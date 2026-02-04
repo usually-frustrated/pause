@@ -7,6 +7,7 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { readFile } from "fs/promises";
 import type { CommitInfo, ReleaseInfo, ActionInputs } from "./types";
+import { parseArtifactNameTemplate } from "./utils";
 
 /**
  * Generate changelog from git commits since last release
@@ -194,6 +195,8 @@ export async function createGitHubRelease(
   tag: string,
   changelog: string,
   artifactPaths: string[],
+  resumeData?: any,
+  artifactNameTemplate?: string,
 ): Promise<ReleaseInfo> {
   core.info(`Creating release ${tag}...`);
 
@@ -212,7 +215,7 @@ export async function createGitHubRelease(
 
   // Upload artifacts as release assets
   for (const artifactPath of artifactPaths) {
-    await uploadReleaseAsset(octokit, owner, repo, release.id, artifactPath);
+    await uploadReleaseAsset(octokit, owner, repo, release.id, artifactPath, resumeData, artifactNameTemplate);
   }
 
   return {
@@ -233,11 +236,22 @@ async function uploadReleaseAsset(
   repo: string,
   releaseId: number,
   filePath: string,
+  resumeData?: any,
+  artifactNameTemplate?: string,
 ): Promise<void> {
   const fs = await import("fs/promises");
   const path = await import("path");
 
-  const fileName = path.basename(filePath);
+  let fileName = path.basename(filePath);
+  
+  // Apply custom artifact name template if provided
+  if (artifactNameTemplate && resumeData) {
+    const fileExtension = path.extname(fileName);
+    const customBaseName = parseArtifactNameTemplate(artifactNameTemplate, resumeData);
+    fileName = `${customBaseName}${fileExtension}`;
+    core.info(`Using custom artifact name: ${fileName}`);
+  }
+
   const fileContent = await fs.readFile(filePath);
 
   core.info(`Uploading ${fileName}...`);

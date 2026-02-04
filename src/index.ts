@@ -17,7 +17,7 @@ import {
   createGitHubRelease,
   deployToGitHubPages,
 } from "./release";
-import { prepareResumeData } from "./utils";
+import { prepareResumeData, parseArtifactNameTemplate } from "./utils";
 
 async function run(): Promise<void> {
   try {
@@ -34,7 +34,8 @@ async function run(): Promise<void> {
         | "manual",
       changelogFile: core.getInput("changelog_file") || undefined,
       changelogText: core.getInput("changelog_text") || undefined,
-      deployGithubPages: core.getInput("deploy_github_pages") || "false",
+      deployGithubPages: core.getBooleanInput("deploy_github_pages") ?? false,
+      artifactNameTemplate: core.getInput("artifact_name_template") || undefined,
     };
 
     core.info("🎬 Starting Pause Action...");
@@ -151,6 +152,8 @@ async function run(): Promise<void> {
           releaseTag,
           changelog,
           artifactPaths,
+          resumeData,
+          inputs.artifactNameTemplate,
         );
 
         core.setOutput("release_url", releaseInfo.htmlUrl);

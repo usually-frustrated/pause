@@ -32,6 +32,9 @@ inputs:
     description: "Template to deploy to GitHub Pages (e.g., 'html-simple'). Set to 'false' or leave empty to disable."
     required: false
     default: "false"
+  artifact_name_template:
+    description: "Template string for artifact names (e.g., '{name} {MMM} {yyyy} Resume'). Use {name} for resume name, {yyyy} for year, {MMM} for month"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -61,3 +64,4 @@ runs:
         INPUT_CHANGELOG_FILE: ${{ inputs.changelog_file }}
         INPUT_CHANGELOG_TEXT: ${{ inputs.changelog_text }}
         INPUT_DEPLOY_GITHUB_PAGES: ${{ inputs.deploy_github_pages }}
+        INPUT_ARTIFACT_NAME_TEMPLATE: ${{ inputs.artifact_name_template }}
