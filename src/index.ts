@@ -19,7 +19,7 @@ import {
 } from "./release";
 import { prepareResumeData, parseArtifactNameTemplate } from "./utils";
 
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     // 1. Get action inputs
     const inputs: ActionInputs = {
