@@ -43,7 +43,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - `src/utils.ts`: Sanitization helpers
   - `src/types.ts`: TypeScript type definitions
 - **Binary caching** using `@actions/tool-cache`:
-  - Gomplate v3.11.6
+  - Gomplate v4.3.0
   - Tectonic v0.15.0
   - Typst v0.11.0
 - **Build strategies**:

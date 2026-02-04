@@ -6,7 +6,7 @@ inputs:
     description: "Path to the resume.json file (e.g., .github/resume.json)"
     required: true
   templates:
-    description: "Comma-separated list of template repository URLs (e.g., github.com/sushruth/pause-template-latex)"
+    description: "Newline-separated list of template repository URLs (e.g., github.com/username/pause-template-latex)"
     required: true
   github_token:
     description: "GitHub token for API access (used to clone templates)"

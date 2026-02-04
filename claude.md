@@ -91,7 +91,7 @@ delimiters: ["[[", "]]"] # Avoid LaTeX {} conflicts
 ## Tech Stack
 
 - **Runtime**: Bun (fast, TypeScript-first, ESM-native)
-- **Templating**: Gomplate v3.11.6
+- **Templating**: Gomplate v4.3.0
 - **LaTeX**: Tectonic v0.15.0 (Rust, auto-downloads packages)
 - **Typst**: Typst CLI v0.11.0
 - **Action**: Composite (not Docker, for speed)

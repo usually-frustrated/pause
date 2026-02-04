@@ -63,7 +63,7 @@ Responsive HTML resume perfect for web deployment.
 Use any template in your workflow:
 
 ```yaml
-- uses: pause-org/action@v1
+- uses: usually-frustrated/pause@main
   with:
     resume_file: 'resume.json'
     templates: |

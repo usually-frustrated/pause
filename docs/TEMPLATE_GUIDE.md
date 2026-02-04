@@ -319,4 +319,4 @@ See official templates:
 ## Need Help?
 
 Open an issue on the Pause Action repository or check the documentation at:
-https://github.com/pause-org/action
+https://github.com/usually-frustrated/pause

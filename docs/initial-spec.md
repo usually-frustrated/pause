@@ -219,7 +219,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Pause > Resume
-        uses: pause-org/action@v1
+        uses: usually-frustrated/pause@main
         with:
           # The Input Data
           resume_file: "resume.json"

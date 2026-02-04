@@ -27,7 +27,7 @@
 
 - ✅ **T1.4**: Add binary caching
   - Implemented in `src/builder.ts` using `@actions/tool-cache`
-  - Caches Gomplate v3.11.6, Tectonic v0.15.0, Typst v0.11.0
+  - Caches Gomplate v4.3.0, Tectonic v0.15.0, Typst v0.11.0
   - Binaries cached by version for faster subsequent runs
 
 ### Phase 1.5: Three-Tier Template System ✨
@@ -66,7 +66,7 @@
 The action is **fully functional** with built-in templates:
 
 ```yaml
-- uses: pause-org/action@v1
+- uses: usually-frustrated/pause@main
   with:
     resume_file: "resume.json"
     templates: |
@@ -175,7 +175,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pause-org/action@v1
+      - uses: usually-frustrated/pause@main
         with:
           resume_file: "resume.json"
           templates: |

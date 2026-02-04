@@ -30,7 +30,7 @@ _Version: 0.1.0 | Created: 2026-01-27 | Completed: 2026-02-03_
 
 ## **Phase 1: Core GitHub Action (Bun + TypeScript)**
 
-_Build a reusable action (`pause-org/action@v1`) to orchestrate resume generation._
+_Build a reusable action (`usually-frustrated/pause@main`) to orchestrate resume generation._
 
 ### **Sub-Tasks**
 

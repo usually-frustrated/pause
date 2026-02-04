@@ -9,7 +9,7 @@ Pause uses a **three-tier template discovery system** for maximum flexibility.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  Tier 1: Built-in Templates (pause-org/action)            │
+│  Tier 1: Built-in Templates (usually-frustrated/pause)      │
 │  ✓ Always available                                        │
 │  ✓ No cloning required                                     │
 │  ✓ Fast execution                                          │
