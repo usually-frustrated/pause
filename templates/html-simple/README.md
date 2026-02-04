@@ -34,18 +34,18 @@ This template follows a classic resume design:
 - ✅ **Skills** (table format with categories)
 - ✅ **Publications** (name, publisher, date, link)
 
-## Usage
+usage:
 
 ```yaml
 templates: |
-  simple
+  html-simple
 ```
 
 Or explicit:
 
 ```yaml
 templates: |
-  builtin:simple
+  builtin:html-simple
 ```
 
 ## Output

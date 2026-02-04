@@ -40,17 +40,18 @@ jobs:
         with:
           resume_file: "resume.json"
           templates: |
-            minimal
-            modern
-            simple
+            latex-minimal
+            html-simple
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          create_release: true
+          deploy_github_pages: html-simple
 ```
 
 ## Template System
 
 Pause uses a three-tier discovery system:
 
-1.  **Built-in**: `minimal` (LaTeX), `modern` (Typst), `simple` (HTML).
+1.  **Built-in**: `latex-minimal` (LaTeX), `typst-modern` (Typst), `html-simple` (HTML).
 2.  **Official**: `official:template-name` (from `pause-org/pause-templates`).
 3.  **Custom**: `github:user/repo` or any standard repository path (e.g., `user/repo`).
 
@@ -58,8 +59,9 @@ Pause uses a three-tier discovery system:
 
 ```yaml
 templates: |
-  minimal                          # Built-in
-  official:academic-cv              # Official
+  latex-minimal                    # Built-in (LaTeX)
+  html-simple                      # Built-in (HTML)
+  official:academic-cv             # Official
   github:you/pause-template-custom  # Custom
 ```
 
@@ -71,7 +73,7 @@ templates: |
 | `templates` | **Yes** | Newline-separated list of templates. |
 | `github_token` | **Yes** | GitHub token for cloning external templates. |
 | `create_release` | No | Create a GitHub release (default: `true`). |
-| `deploy_github_pages` | No | Template name to deploy to GitHub Pages (e.g., `simple`). |
+| `deploy_github_pages` | No | Template name to deploy to GitHub Pages (e.g., `html-simple`). |
 
 ## Documentation
 
