@@ -1,5 +1,5 @@
 <div align="center">
-<img src="logo.svg" width="80" height="80" alt="Pause Logo" />
+<img src="logo.svg" width="24" height="24" alt="Pause Logo" />
 
 # Pause
 
@@ -67,13 +67,13 @@ templates: |
 
 ## Inputs
 
-| Input | Required | Description |
-| :--- | :--- | :--- |
-| `resume_file` | **Yes** | Path to your `resume.json`. |
-| `templates` | **Yes** | Newline-separated list of templates. |
-| `github_token` | **Yes** | GitHub token for cloning external templates. |
-| `create_release` | No | Create a GitHub release (default: `true`). |
-| `deploy_github_pages` | No | Template name to deploy to GitHub Pages (e.g., `html-simple`). |
+| Input                 | Required | Description                                                    |
+| :-------------------- | :------- | :------------------------------------------------------------- |
+| `resume_file`         | **Yes**  | Path to your `resume.json`.                                    |
+| `templates`           | **Yes**  | Newline-separated list of templates.                           |
+| `github_token`        | **Yes**  | GitHub token for cloning external templates.                   |
+| `create_release`      | No       | Create a GitHub release (default: `true`).                     |
+| `deploy_github_pages` | No       | Template name to deploy to GitHub Pages (e.g., `html-simple`). |
 
 ## Documentation
 
