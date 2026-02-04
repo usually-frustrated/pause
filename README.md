@@ -71,7 +71,7 @@ templates: |
 | `templates` | **Yes** | Newline-separated list of templates. |
 | `github_token` | **Yes** | GitHub token for cloning external templates. |
 | `create_release` | No | Create a GitHub release (default: `true`). |
-| `deploy_github_pages` | No | Deploy HTML template to GitHub Pages (default: `false`). |
+| `deploy_github_pages` | No | Template name to deploy to GitHub Pages (e.g., `simple`). |
 
 ## Documentation
 

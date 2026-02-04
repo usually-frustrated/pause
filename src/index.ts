@@ -34,7 +34,7 @@ async function run(): Promise<void> {
         | "manual",
       changelogFile: core.getInput("changelog_file") || undefined,
       changelogText: core.getInput("changelog_text") || undefined,
-      deployGithubPages: core.getBooleanInput("deploy_github_pages") ?? false,
+      deployGithubPages: core.getInput("deploy_github_pages") || "false",
     };
 
     core.info("🎬 Starting Pause Action...");
@@ -158,21 +158,39 @@ async function run(): Promise<void> {
 
         core.info(`✅ Release created: ${releaseInfo.htmlUrl}`);
 
-        // Deploy to GitHub Pages if enabled and single HTML template
-        const htmlResults = successful.filter((r) => r.templateType === "html");
-        if (inputs.deployGithubPages && htmlResults.length === 1) {
-          core.info("Deploying to GitHub Pages...");
-          await deployToGitHubPages(
-            octokit,
-            owner,
-            repo,
-            htmlResults[0].outputPath,
+        // Deploy to GitHub Pages if enabled
+        const deployTemplate = inputs.deployGithubPages.toLowerCase();
+        if (deployTemplate !== "false" && deployTemplate !== "") {
+          core.info(`Checking for GitHub Pages deployment: ${deployTemplate}`);
+
+          // Find the specific result that matches the requested template
+          // We check both the template URL/shortcut and the template name if available
+          const deployTarget = successful.find(
+            (r) =>
+              r.template === deployTemplate ||
+              r.template === `builtin:${deployTemplate}` ||
+              r.template === `github:${deployTemplate}` ||
+              r.template.endsWith(`/${deployTemplate}`) ||
+              r.templateType === deployTemplate, // Allow 'html' as a shorthand
           );
-          core.info(`✅ Deployed to https://${owner}.github.io/${repo}/`);
-        } else if (inputs.deployGithubPages && htmlResults.length !== 1) {
-          core.warning(
-            `Cannot deploy to GitHub Pages: found ${htmlResults.length} HTML templates (expected exactly 1)`,
-          );
+
+          if (deployTarget && deployTarget.templateType === "html") {
+            core.info(`Deploying ${deployTarget.template} to GitHub Pages...`);
+            await deployToGitHubPages(
+              octokit,
+              owner,
+              repo,
+              deployTarget.outputPath,
+            );
+          } else if (deployTarget) {
+            core.warning(
+              `Cannot deploy ${deployTarget.template} to GitHub Pages: only HTML templates are supported`,
+            );
+          } else {
+            core.warning(
+              `GitHub Pages deployment failed: template "${deployTemplate}" was not found or failed to build`,
+            );
+          }
         }
       } catch (error) {
         const errorMessage =

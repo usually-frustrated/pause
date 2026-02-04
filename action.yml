@@ -29,7 +29,7 @@ inputs:
     description: "Manual changelog text when changelog_source is 'manual'"
     required: false
   deploy_github_pages:
-    description: "Deploy single HTML template to GitHub Pages as <username>-<reponame>.github.io"
+    description: "Template to deploy to GitHub Pages (e.g., 'simple'). Set to 'false' or leave empty to disable."
     required: false
     default: "false"
 runs:
