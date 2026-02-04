@@ -31,12 +31,12 @@ export function parseTemplates(templatesInput: string): string[] {
 
   return lines.map((line) => {
     // Handle builtin: prefix or known builtin names
-    const builtinTemplates = ["minimal", "modern", "simple"];
+    const builtinTemplates = ["latex-minimal", "typst-modern", "html-simple"];
     if (line.startsWith("builtin:")) {
-      return line; // Keep as-is: builtin:minimal
+      return line; // Keep as-is: builtin:latex-minimal
     }
     if (builtinTemplates.includes(line)) {
-      return `builtin:${line}`; // Convert to: builtin:minimal
+      return `builtin:${line}`; // Convert to: builtin:latex-minimal
     }
 
     // Handle official: prefix
@@ -83,7 +83,7 @@ export async function resolveTemplate(
     } catch {
       throw new Error(
         `Built-in template "${templateName}" not found. ` +
-          `Available templates: minimal, modern, simple`,
+        `Available templates: latex-minimal, typst-modern, html-simple`,
       );
     }
   }
@@ -157,7 +157,7 @@ export async function loadManifest(
   if (!manifestContent || !manifestFile) {
     throw new Error(
       `No template manifest found in ${templatePath}. ` +
-        `Expected one of: ${manifestFiles.join(", ")}`,
+      `Expected one of: ${manifestFiles.join(", ")}`,
     );
   }
 
@@ -200,7 +200,7 @@ function validateManifest(manifest: any): asserts manifest is TemplateManifest {
   if (!validTypes.includes(manifest.type)) {
     throw new Error(
       `Invalid template type: ${manifest.type}. ` +
-        `Must be one of: ${validTypes.join(", ")}`,
+      `Must be one of: ${validTypes.join(", ")}`,
     );
   }
 }

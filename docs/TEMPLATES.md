@@ -14,7 +14,7 @@ Pause uses a **three-tier template discovery system** for maximum flexibility.
 │  ✓ No cloning required                                     │
 │  ✓ Fast execution                                          │
 │                                                             │
-│  Usage: minimal, modern, simple                            │
+│  Usage: latex-minimal, typst-modern, html-simple
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
@@ -38,42 +38,42 @@ Pause uses a **three-tier template discovery system** for maximum flexibility.
 
 ## Built-in Templates (Tier 1)
 
-### 📄 Minimal
+### 📄 Latex Minimal
 
-**File:** `templates/minimal/`  
+**File:** `templates/latex-minimal/`  
 **Type:** LaTeX → PDF  
 **Style:** Professional, single-column, classic typography
 
 ```yaml
-templates: minimal
+templates: latex-minimal
 ```
 
 **Best for:** Traditional industries, ATS systems, clean presentation
 
 ---
 
-### ✨ Modern
+### ✨ Typst Modern
 
-**File:** `templates/modern/`  
+**File:** `templates/typst-modern/`  
 **Type:** Typst → PDF  
 **Style:** Contemporary, blue accents, modern spacing
 
 ```yaml
-templates: modern
+templates: typst-modern
 ```
 
 **Best for:** Tech companies, creative roles, modern industries
 
 ---
 
-### 🌐 Simple
+### 🌐 HTML Simple
 
-**File:** `templates/simple/`  
+**File:** `templates/html-simple/`  
 **Type:** HTML → Web  
 **Style:** Responsive, gradient header, print-friendly
 
 ```yaml
-templates: simple
+templates: html-simple
 ```
 
 **Best for:** GitHub Pages, portfolios, web deployment
@@ -123,10 +123,10 @@ See [TEMPLATE_GUIDE.md](TEMPLATE_GUIDE.md) for the complete guide.
 ```typescript
 // The action parses template references in order:
 
-"minimal"                    → builtin:minimal
-"modern"                     → builtin:modern
-"simple"                     → builtin:simple
-"builtin:minimal"            → builtin:minimal (explicit)
+"latex-minimal"              → builtin:latex-minimal
+"typst-modern"               → builtin:typst-modern
+"html-simple"                → builtin:html-simple
+"builtin:latex-minimal"      → builtin:latex-minimal (explicit)
 
 "official:academic-cv"       → github.com/pause-org/pause-templates/academic-cv
 
@@ -158,8 +158,8 @@ Use all three tiers in a single workflow:
 
 ```yaml
 templates: |
-  minimal                          # Tier 1: Built-in
-  modern                           # Tier 1: Built-in
+  latex-minimal                    # Tier 1: Built-in
+  typst-modern                     # Tier 1: Built-in
   official:academic-cv             # Tier 2: Official
   github:you/pause-template-fancy  # Tier 3: Custom
 ```
@@ -194,30 +194,30 @@ The action will generate one output per template.
 ### Minimal Setup
 
 ```yaml
-templates: minimal
+templates: latex-minimal
 ```
 
 ### Multi-Format
 
 ```yaml
 templates: |
-  minimal      # PDF via LaTeX
-  modern       # PDF via Typst
-  simple       # HTML for web
+  latex-minimal # PDF via LaTeX
+  typst-modern  # PDF via Typst
+  html-simple   # HTML for web
 ```
 
 ### Advanced Mix
 
 ```yaml
 templates: |
-  minimal                        # Quick PDF
+  latex-minimal                  # Quick PDF
   official:academic-cv           # Academic version
   github:me/pause-template-cv    # Personal custom
 ```
 
 ## Next Steps
 
-1. **Use built-in templates** - Start with `minimal`, `modern`, or `simple`
+1. **Use built-in templates** - Start with `latex-minimal`, `typst-modern`, or `html-simple`
 2. **Explore official templates** - Check `pause-org/pause-templates` (coming soon)
 3. **Create custom templates** - Follow the [Template Guide](TEMPLATE_GUIDE.md)
 4. **Share your templates** - Publish with `pause-template-*` naming

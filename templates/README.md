@@ -4,10 +4,10 @@ Pause includes three production-ready templates out of the box.
 
 ## Available Templates
 
-### 📄 Minimal (LaTeX)
+### 📄 Latex Minimal (LaTeX)
 
 **Type:** `latex` → PDF  
-**Usage:** `minimal` or `builtin:minimal`
+**Usage:** `latex-minimal` or `builtin:latex-minimal`
 
 Clean, single-column resume with classic typography. Perfect for traditional industries.
 
@@ -18,14 +18,14 @@ Clean, single-column resume with classic typography. Perfect for traditional ind
 - Compact formatting
 - ATS-friendly
 
-[View Template →](minimal/)
+[View Template →](latex-minimal/)
 
 ---
 
-### ✨ Modern (Typst)
+### ✨ Typst Modern (Typst)
 
 **Type:** `typst` → PDF  
-**Usage:** `modern` or `builtin:modern`
+**Usage:** `typst-modern` or `builtin:typst-modern`
 
 Contemporary resume with blue accent colors and modern typography.
 
@@ -36,14 +36,14 @@ Contemporary resume with blue accent colors and modern typography.
 - Professional spacing
 - Modern appearance
 
-[View Template →](modern/)
+[View Template →](typst-modern/)
 
 ---
 
-### 🌐 Simple (HTML)
+### 🌐 HTML Simple (HTML)
 
 **Type:** `html` → Web  
-**Usage:** `simple` or `builtin:simple`
+**Usage:** `html-simple` or `builtin:html-simple`
 
 Responsive HTML resume perfect for web deployment.
 
@@ -54,7 +54,7 @@ Responsive HTML resume perfect for web deployment.
 - No external dependencies
 - GitHub Pages ready
 
-[View Template →](simple/)
+[View Template →](html-simple/)
 
 ---
 
@@ -67,9 +67,9 @@ Use any template in your workflow:
   with:
     resume_file: 'resume.json'
     templates: |
-      minimal
-      modern
-      simple
+      latex-minimal
+      typst-modern
+      html-simple
     github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 

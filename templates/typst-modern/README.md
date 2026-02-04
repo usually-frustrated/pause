@@ -28,12 +28,12 @@ Modern, colorful layout with blue accent colors and professional spacing.
 
 ```yaml
 templates: |
-  builtin:modern
+  builtin:typst-modern
 ```
 
 Or as shorthand:
 ```yaml
-templates: modern
+templates: typst-modern
 ```
 
 ## Output

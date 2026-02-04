@@ -28,12 +28,12 @@ Simple, professional layout suitable for most industries.
 
 ```yaml
 templates: |
-  builtin:minimal
+  builtin:latex-minimal
 ```
 
 Or as shorthand:
 ```yaml
-templates: minimal
+templates: latex-minimal
 ```
 
 ## Output
