@@ -34,7 +34,7 @@ async function run(): Promise<void> {
         | "manual",
       changelogFile: core.getInput("changelog_file") || undefined,
       changelogText: core.getInput("changelog_text") || undefined,
-      deployGithubPages: core.getBooleanInput("deploy_github_pages") ?? false,
+      deployGithubPages: core.getInput("deploy_github_pages") || "false",
       artifactNameTemplate: core.getInput("artifact_name_template") || undefined,
     };
 

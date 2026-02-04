@@ -1,8 +1,4 @@
-import { ResumeData } from './types';
-
 /**
-
-import { ResumeData } from "./types";
  * Utility functions for sanitization and helpers
  */
 
