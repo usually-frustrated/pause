@@ -1,28 +1,29 @@
-# Minimal Professional Template
+# Minimal Professional Template (TLCresume)
 
-A clean, single-column resume template with classic typography.
+Based on the TLCresume LaTeX style by Timmy Chan and gobborg. Clean, professional single-column layout with custom formatting and typography.
 
 ## Preview
 
-Simple, professional layout suitable for most industries.
+Professional layout with three-column header, tabular skills section, and tight vertical spacing optimized for content density.
 
 ## Features
 
-- Single column layout
-- Clear section headers with horizontal rules
-- Compact formatting for maximum content
-- Hyperlinked email and website
-- Professional typography
+- Three-column header layout (contact info, name, social links)
+- Custom `TLCresume.sty` package for consistent formatting
+- Tabular skills section with dashed separators
+- Tight `zitemize` environment for compact bullet points
+- Small caps section headers
+- Custom colors for hyperlinks
+- 0.5in margins for maximum content
 
 ## Supported Resume Sections
 
-- ✅ Basics (name, contact, location)
-- ✅ Summary
-- ✅ Work Experience
+- ✅ Basics (name, contact, location, profiles)
+- ✅ Summary/Objective
+- ✅ Work Experience (with highlights)
 - ✅ Education
-- ✅ Skills
-- ✅ Projects
-- ✅ Awards & Honors
+- ✅ Skills (rendered as table)
+- ✅ Publications
 
 ## Usage
 

@@ -1,6 +1,6 @@
-name: "Minimal Professional"
+name: "Minimal Professional (TLCresume)"
 type: "latex"
 entrypoint: "main.tex.tmpl"
 output_name: "resume"
 delimiters: ["[[", "]]"]
-description: "Clean, minimal single-column resume with classic typography"
+description: "Professional single-column resume based on TLCresume style with three-column header and tabular skills"
