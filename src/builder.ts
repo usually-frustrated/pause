@@ -184,6 +184,24 @@ export async function renderTemplate(
 
   await exec.exec('gomplate', args);
 
+  // Copy any .sty files from template directory to output directory for LaTeX compilation
+  if (manifest.type === 'latex') {
+    const fs = await import('fs/promises');
+    try {
+      const templateFiles = await fs.readdir(templatePath);
+      for (const file of templateFiles) {
+        if (file.endsWith('.sty')) {
+          const srcPath = join(templatePath, file);
+          const destPath = join(dirname(outputPath), file);
+          await fs.copyFile(srcPath, destPath);
+          core.info(`Copied ${file} to output directory`);
+        }
+      }
+    } catch (error) {
+      core.warning(`Failed to copy .sty files: ${error}`);
+    }
+  }
+
   // Post-process: inject custom sanitization functions
   // This is a workaround - ideally we'd use Gomplate plugins
   // For now, we'll rely on template authors to use proper escaping
@@ -247,11 +265,27 @@ async function buildLatex(inputPath: string, outputPath: string): Promise<void> 
   core.info(`Input path: ${inputPath}`);
   core.info(`Output directory: ${dirname(outputPath)}`);
 
-  // Tectonic automatically handles package installation
-  await exec.exec('tectonic', [
-    inputPath,
-    '--outdir', dirname(outputPath)
-  ]);
+  try {
+    // Tectonic automatically handles package installation
+    await exec.exec('tectonic', [
+      inputPath,
+      '--outdir', dirname(outputPath)
+    ]);
+  } catch (error) {
+    core.error(`Tectonic failed with error: ${error}`);
+    
+    // Show the LaTeX file content for debugging
+    const fs = await import('fs/promises');
+    try {
+      const latexContent = await fs.readFile(inputPath, 'utf-8');
+      core.info(`LaTeX file content (first 1000 chars):`);
+      core.info(latexContent.substring(0, 1000));
+    } catch (readError) {
+      core.error(`Could not read LaTeX file: ${readError}`);
+    }
+    
+    throw error;
+  }
 
   // Rename Tectonic output if it doesn't match outputPath
   const inputBaseName = basename(inputPath).replace(extname(inputPath), '');
