@@ -86,13 +86,18 @@ with:
 | `create_release`      | No       | Create a GitHub release (default: `false`).                    |
 | `deploy_github_pages` | No       | Template name to deploy to GitHub Pages (e.g., `html-template`). |
 | `artifact_name_template` | No       | Template for artifact filenames (default: `resume-{template}-{timestamp}`). |
-| `artifact_name_template` | No       | Template for artifact filenames (default: `resume-{template}-{timestamp}`). |
 
 ## Documentation
 
 - **[Template Guide](docs/TEMPLATE_GUIDE.md)**: How to create your own templates.
 - **[Architecture](docs/TEMPLATES.md)**: Deep dive into the template system.
 - **[Changelog](CHANGELOG.md)**: Version history and updates.
+
+## Repos That Use This Action
+
+- **[sushruth/resume](https://github.com/sushruth/resume)** - Personal resume using Pause for automated generation
+
+*More repositories coming soon! Want to add yours? Feel free to submit a PR.*
 
 ## License
 
