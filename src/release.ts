@@ -200,6 +200,19 @@ export async function createGitHubRelease(
 ): Promise<ReleaseInfo> {
   core.info(`Creating release ${tag}...`);
 
+  // Get commit author information for proper attribution
+  let commitAuthor = "GitHub Actions";
+  try {
+    const { data: commitData } = await octokit.rest.repos.getCommit({
+      owner,
+      repo,
+      ref: github.context.sha,
+    });
+    commitAuthor = commitData.commit.author?.name || commitData.author?.login || "GitHub Actions";
+  } catch (error) {
+    core.warning(`Could not fetch commit author: ${error}`);
+  }
+
   // Generate a more meaningful release name using artifact name template + unique identifier
   let releaseName = `Resume ${tag}`;
   if (artifactNameTemplate && resumeData) {
@@ -209,13 +222,16 @@ export async function createGitHubRelease(
     releaseName = `${baseReleaseName} (${shortSha})`;
   }
   
+  // Add author attribution to changelog
+  const changelogWithAuthor = `${changelog}\n\n---\n📝 Release created automatically from commit by **${commitAuthor}**`;
+  
   // Create the release
   const { data: release } = await octokit.rest.repos.createRelease({
     owner,
     repo,
     tag_name: tag,
     name: releaseName,
-    body: changelog,
+    body: changelogWithAuthor,
     draft: false,
     prerelease: false,
   });
