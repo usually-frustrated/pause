@@ -36,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Generate Resume
-        uses: usually-frustrated/pause@v2
+        uses: usually-frustrated/pause@v1
         with:
           resume_file: "resume.json"
           templates: |
@@ -72,7 +72,7 @@ templates: |
 Use `artifact_name_template` to customize output filenames:
 
 ```yaml
-uses: usually-frustrated/pause@v2
+uses: usually-frustrated/pause@v1
 with:
   artifact_name_template: "John Doe {MMM} {yyyy} Resume"
   # Available variables: {name}, {yyyy}, {MMM}
@@ -123,7 +123,7 @@ If a template repository doesn't have a `main` branch, the action falls back to 
 ```yaml
 - name: Generate Resume
   id: resume
-  uses: usually-frustrated/pause@v2
+  uses: usually-frustrated/pause@v1
   with:
     resume_file: resume.json
     templates: latex-template
@@ -161,9 +161,9 @@ changelog_text: |
   - Fixed formatting
 ```
 
-## Breaking Changes in v2
+## Important Behavior
 
-⚠️ **Action now fails if ANY template fails to compile** (previously only failed if ALL templates failed). This ensures you're immediately notified of build errors.
+⚠️ **Action fails if ANY template fails to compile.** This ensures you're immediately notified of build errors rather than silently skipping failed templates.
 
 ## Troubleshooting
 
