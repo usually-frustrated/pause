@@ -72,14 +72,14 @@ Use `artifact_name_template` to customize output filenames:
 ```yaml
 uses: usually-frustrated/pause@v1
 with:
-  artifact_name_template: "my-{template}-resume-{timestamp}"
-  # Available variables: {template}, {timestamp}, {sha}
+  artifact_name_template: "John Doe {MMM} {yyyy} Resume"
+  # Available variables: {name}, {yyyy}, {MMM}
 ```
 
 **Available Template Variables:**
-- `{template}` - Template name (e.g., "latex-template", "html-template")
-- `{timestamp}` - Unix timestamp for unique naming
-- `{sha}` - Git commit SHA of the current commit
+- `{name}` - Name from resume JSON (e.g., "John Doe")
+- `{yyyy}` - Current year (4 digits, e.g., "2024")
+- `{MMM}` - Current month (3-letter abbreviation, e.g., "Jan", "Feb")
 
 ### Version-Independent Templates
 
