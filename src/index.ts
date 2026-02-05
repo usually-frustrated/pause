@@ -145,6 +145,20 @@ export async function run(): Promise<void> {
 
         // Create release with artifacts
         const artifactPaths = successful.map((r) => r.outputPath);
+        core.info(`📦 Artifacts to upload: ${artifactPaths.join(', ')}`);
+        
+        // Verify all artifacts exist before creating release
+        const fs = await import('fs/promises');
+        for (const artifactPath of artifactPaths) {
+          try {
+            await fs.access(artifactPath);
+            core.info(`✅ Artifact verified: ${artifactPath}`);
+          } catch (error) {
+            core.error(`❌ Artifact not found: ${artifactPath}`);
+            throw new Error(`Missing artifact: ${artifactPath}`);
+          }
+        }
+        
         const releaseInfo = await createGitHubRelease(
           octokit,
           owner,

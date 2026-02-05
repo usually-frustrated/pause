@@ -14,7 +14,7 @@ inputs:
   create_release:
     description: "Whether to create a GitHub release with generated artifacts"
     required: false
-    default: "true"
+    default: "false"
   release_tag:
     description: "Release tag (e.g., v1.0.0). If not provided, auto-generates based on timestamp"
     required: false

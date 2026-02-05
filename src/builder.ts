@@ -243,7 +243,9 @@ export async function buildTemplate(
  * Build LaTeX using Tectonic
  */
 async function buildLatex(inputPath: string, outputPath: string): Promise<void> {
-  core.info('Building LaTeX with Tectonic...');
+  core.info(`Building LaTeX with Tectonic: ${inputPath} -> ${outputPath}`);
+  core.info(`Input path: ${inputPath}`);
+  core.info(`Output directory: ${dirname(outputPath)}`);
 
   // Tectonic automatically handles package installation
   await exec.exec('tectonic', [
@@ -254,10 +256,29 @@ async function buildLatex(inputPath: string, outputPath: string): Promise<void> 
   // Rename Tectonic output if it doesn't match outputPath
   const inputBaseName = basename(inputPath).replace(extname(inputPath), '');
   const tectonicExpectedOutput = join(dirname(outputPath), `${inputBaseName}.pdf`);
+  core.info(`Expected Tectonic output: ${tectonicExpectedOutput}`);
+  core.info(`Final output path: ${outputPath}`);
+  
   if (tectonicExpectedOutput !== outputPath) {
     core.info(`Renaming Tectonic output: ${tectonicExpectedOutput} -> ${outputPath}`);
     const fs = await import('fs/promises');
-    await fs.rename(tectonicExpectedOutput, outputPath);
+    try {
+      await fs.rename(tectonicExpectedOutput, outputPath);
+      core.info(`Successfully renamed to: ${outputPath}`);
+    } catch (error) {
+      core.error(`Failed to rename PDF: ${error}`);
+      throw error;
+    }
+  }
+  
+  // Verify the final PDF exists
+  const fs = await import('fs/promises');
+  try {
+    await fs.access(outputPath);
+    core.info(`✅ PDF verified at: ${outputPath}`);
+  } catch (error) {
+    core.error(`❌ PDF not found at expected location: ${outputPath}`);
+    throw error;
   }
 }
 
