@@ -36,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Generate Resume
-        uses: usually-frustrated/pause@main
+        uses: usually-frustrated/pause@v1
         with:
           resume_file: "resume.json"
           templates: |
@@ -70,7 +70,7 @@ templates: |
 Use `artifact_name_template` to customize output filenames:
 
 ```yaml
-uses: usually-frustrated/pause@main
+uses: usually-frustrated/pause@v1
 with:
   artifact_name_template: "my-{template}-resume-{timestamp}"
   # Available variables: {template}, {timestamp}, {sha}
