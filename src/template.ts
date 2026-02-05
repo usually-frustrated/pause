@@ -31,7 +31,7 @@ export function parseTemplates(templatesInput: string): string[] {
 
   return lines.map((line) => {
     // Handle builtin: prefix or known builtin names
-    const builtinTemplates = ["latex-minimal", "typst-modern", "html-simple"];
+    const builtinTemplates = ["latex-template", "typst-template", "html-template"];
     if (line.startsWith("builtin:")) {
       return line; // Keep as-is: builtin:latex-minimal
     }
@@ -83,7 +83,7 @@ export async function resolveTemplate(
     } catch {
       throw new Error(
         `Built-in template "${templateName}" not found. ` +
-        `Available templates: latex-minimal, typst-modern, html-simple`,
+        `Available templates: latex-template, typst-template, html-template`,
       );
     }
   }

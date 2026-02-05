@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.cdnfonts.com/css/cmu-serif" rel="stylesheet" />
+  <meta name="viewport" content="width=1024, initial-scale=1.0, minimum-scale=1.0" />
+  <title>Resume - [[ .basics.name ]]</title>
+  <style>
+    @page {
+      margin: 0;
+    }
+
+    body {
+      font-family: "CMU Serif", "Times New Roman", serif;
+      font-size: 11pt;
+      line-height: 1.4;
+      margin: 2em auto;
+      max-width: 8.5in;
+      padding: 0 1in;
+    }
+
+    /* Section headers - matches LaTeX \section */
+    h2 {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+      border-bottom: 1px solid #000;
+      padding-bottom: 0.2em;
+    }
+
+    /* Subsection headers (job titles) - matches LaTeX \subsection */
+    h3 {
+      font-size: 1em;
+      font-weight: bold;
+      margin-top: 1em;
+      margin-bottom: 0.3em;
+    }
+
+    /* Paragraphs and lists */
+    p {
+      margin: 0.5em 0;
+      text-align: justify;
+    }
+
+    ul {
+      margin: 0.3em 0;
+      padding-left: 1.5em;
+    }
+
+    li {
+      margin: 0.2em 0;
+    }
+
+    /* Table styling for skills - matches LaTeX table with dashed lines */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5em 0;
+    }
+
+    table td {
+      padding: 0.6em 0;
+      vertical-align: top;
+    }
+
+    table td:first-child {
+      font-weight: bold;
+      width: 28%;
+      padding-right: 1.5em;
+    }
+
+    table td:last-child {
+      width: 68%;
+      font-size: 0.9em;
+    }
+
+    /* Links */
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        margin: 0;
+        padding: 0.5in;
+      }
+
+      a {
+        color: #000;
+      }
+    }
+
+    
+  </style>
+</head>
+<body>
+  [[ if .basics ]]
+  <!-- Header Section -->
+  [[ $locationStr := "" ]]
+  [[ if .basics.location ]]
+    [[ if and .basics.location.city .basics.location.region ]]
+      [[ $locationStr = printf "%s, %s" .basics.location.city .basics.location.region ]]
+    [[ else if .basics.location.city ]]
+      [[ $locationStr = .basics.location.city ]]
+    [[ else if .basics.location.region ]]
+      [[ $locationStr = .basics.location.region ]]
+    [[ end ]]
+  [[ end ]]
+
+  [[ $githubUsername := "" ]]
+  [[ $linkedinUsername := "" ]]
+  [[ if .basics.profiles ]]
+    [[ range .basics.profiles ]]
+      [[ if eq .network "GitHub" ]]
+        [[ $githubUsername = .username ]]
+      [[ end ]]
+      [[ if eq .network "LinkedIn" ]]
+        [[ $linkedinUsername = .username ]]
+      [[ end ]]
+    [[ end ]]
+  [[ end ]]
+
+  <h1>[[ .basics.name ]]</h1>
+  [[ if $locationStr ]]<p>[[ $locationStr ]]</p>[[ end ]]
+  [[ if .basics.email ]]<p><a href="mailto:[[ .basics.email ]]">[[ .basics.email ]]</a></p>[[ end ]]
+  [[ if .basics.phone ]]<p>[[ .basics.phone ]]</p>[[ end ]]
+  [[ if $githubUsername ]]<p><a href="https://github.com/[[ $githubUsername ]]">GitHub: [[ $githubUsername ]]</a></p>[[ end ]]
+  [[ if $linkedinUsername ]]<p><a href="https://www.linkedin.com/in/[[ $linkedinUsername ]]">LinkedIn: [[ $linkedinUsername ]]</a></p>[[ end ]]
+  [[ end ]]
+
+  <!-- Objective/Summary Section -->
+  [[ if .basics.summary ]]
+  <h2>Objective</h2>
+  <p>[[ .basics.summary ]]</p>
+  [[ end ]]
+
+  <!-- Experience Section -->
+  [[ if .work ]]
+  <h2>Experience</h2>
+  [[ range .work ]]
+    [[ $dateRange := printf "%s - %s" (.startDate | default "") (.endDate | default "Present") ]]
+    <h3>[[ .position ]]</h3>
+    <p>[[ .name ]] [[ if .location ]]· [[ .location ]][[ end ]] · [[ $dateRange ]]</p>
+    [[ if .summary ]]
+    <p>[[ .summary ]]</p>
+    [[ end ]]
+    [[ if .highlights ]]
+    <ul>
+      [[ range .highlights ]]
+      <li>[[ . ]]</li>
+      [[ end ]]
+    </ul>
+    [[ end ]]
+  [[ end ]]
+  [[ end ]]
+
+  <!-- Education Section -->
+  [[ if .education ]]
+  <h2>Education</h2>
+  [[ range .education ]]
+    [[ $degree := "" ]]
+    [[ if and .studyType .area ]]
+      [[ $degree = printf "%s in %s" .studyType .area ]]
+    [[ else if .studyType ]]
+      [[ $degree = .studyType ]]
+    [[ else if .area ]]
+      [[ $degree = .area ]]
+    [[ end ]]
+    [[ $year := .endDate ]]
+    [[ if not $year ]][[ $year = .startDate | default "" ]][[ end ]]
+    <h3>[[ $degree ]]</h3>
+    <p>[[ .institution ]] [[ if $year ]]· [[ $year ]][[ end ]]</p>
+  [[ end ]]
+  [[ end ]]
+
+  <!-- Skills Section -->
+  [[ if .skills ]]
+  <h2>Proficiency</h2>
+  <table>
+    <tbody>
+      [[ range .skills ]]
+      <tr>
+        <td>[[ .name ]]</td>
+        <td>[[ join .keywords ", " ]]</td>
+      </tr>
+      [[ end ]]
+    </tbody>
+  </table>
+  [[ end ]]
+
+  <!-- Publications Section -->
+  [[ if .publications ]]
+  <h2>Publications</h2>
+  [[ range .publications ]]
+    <p>[[ .name ]] [[ if .publisher ]]([[ .publisher ]])[[ end ]] [[ if .releaseDate ]]· [[ .releaseDate ]][[ end ]]</p>
+  [[ end ]]
+  [[ end ]]
+
+</body>
+</html>

@@ -38,7 +38,7 @@ delimiters: ["[[", "]]"]
     return "";
   },
   access: async (path: string) => {
-    if (path.includes("latex-minimal") || path.includes("typst-modern") || path.includes("html-simple")) {
+    if (path.includes("latex-template") || path.includes("typst-template") || path.includes("html-template")) {
       return; // Success for built-in templates
     }
     if (path.includes("template.yaml")) {
@@ -66,9 +66,9 @@ mock.module("yaml", () => ({
 
 describe("Template Parser", () => {
   it("should handle builtin templates", () => {
-    const templates = "latex-minimal\ntypst-modern";
+    const templates = "latex-template\ntypst-template";
     const parsed = parseTemplates(templates);
-    expect(parsed).toEqual(["builtin:latex-minimal", "builtin:typst-modern"]);
+    expect(parsed).toEqual(["builtin:latex-template", "builtin:typst-template"]);
   });
 
   it("should handle official templates", () => {
@@ -138,8 +138,8 @@ describe("Output Logic", () => {
 
 describe("Template Resolution", () => {
   it("should resolve built-in templates correctly", async () => {
-    const result = await resolveTemplate("builtin:latex-minimal", "fake-token");
-    expect(result).toContain("latex-minimal");
+    const result = await resolveTemplate("builtin:latex-template", "fake-token");
+    expect(result).toContain("latex-template");
   });
 
   it("should throw error for non-existent built-in templates", async () => {

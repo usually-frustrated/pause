@@ -40,18 +40,18 @@ jobs:
         with:
           resume_file: "resume.json"
           templates: |
-            latex-minimal
-            html-simple
+            latex-template
+            html-template
           github_token: ${{ secrets.GITHUB_TOKEN }}
           create_release: true
-          deploy_github_pages: html-simple
+          deploy_github_pages: html-template
 ```
 
 ## Template System
 
 Pause uses a three-tier discovery system:
 
-1.  **Built-in**: `latex-minimal` (LaTeX), `typst-modern` (Typst), `html-simple` (HTML).
+1.  **Built-in**: `latex-template` (LaTeX), `typst-template` (Typst), `html-template` (HTML).
 2.  **Official**: `official:template-name` (from `pause-org/pause-templates`).
 3.  **Custom**: `github:user/repo` or any standard repository path (e.g., `user/repo`).
 
@@ -59,10 +59,21 @@ Pause uses a three-tier discovery system:
 
 ```yaml
 templates: |
-  latex-minimal                    # Built-in (LaTeX)
-  html-simple                      # Built-in (HTML)
+  latex-template                   # Built-in (LaTeX)
+  html-template                    # Built-in (HTML)
   official:academic-cv             # Official
   github:you/pause-template-custom  # Custom
+```
+
+### Artifact Naming
+
+Use `artifact_name_template` to customize output filenames:
+
+```yaml
+uses: usually-frustrated/pause@main
+with:
+  artifact_name_template: "my-{template}-resume-{timestamp}"
+  # Available variables: {template}, {timestamp}, {sha}
 ```
 
 ## Inputs
@@ -72,8 +83,10 @@ templates: |
 | `resume_file`         | **Yes**  | Path to your `resume.json`.                                    |
 | `templates`           | **Yes**  | Newline-separated list of templates.                           |
 | `github_token`        | **Yes**  | GitHub token for cloning external templates.                   |
-| `create_release`      | No       | Create a GitHub release (default: `true`).                     |
-| `deploy_github_pages` | No       | Template name to deploy to GitHub Pages (e.g., `html-simple`). |
+| `create_release`      | No       | Create a GitHub release (default: `false`).                    |
+| `deploy_github_pages` | No       | Template name to deploy to GitHub Pages (e.g., `html-template`). |
+| `artifact_name_template` | No       | Template for artifact filenames (default: `resume-{template}-{timestamp}`). |
+| `artifact_name_template` | No       | Template for artifact filenames (default: `resume-{template}-{timestamp}`). |
 
 ## Documentation
 

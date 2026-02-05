@@ -29,7 +29,7 @@ inputs:
     description: "Manual changelog text when changelog_source is 'manual'"
     required: false
   deploy_github_pages:
-    description: "Template to deploy to GitHub Pages (e.g., 'html-simple'). Set to 'false' or leave empty to disable."
+    description: "Template to deploy to GitHub Pages (e.g., 'html-template'). Set to 'false' or leave empty to disable."
     required: false
     default: "false"
   artifact_name_template:
