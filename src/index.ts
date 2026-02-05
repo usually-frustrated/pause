@@ -223,10 +223,8 @@ export async function run(): Promise<void> {
     core.setOutput("success_count", successful.length);
     core.setOutput("failure_count", failed.length);
 
-    if (failed.length > 0 && successful.length === 0) {
-      core.setFailed("All templates failed to build");
-    } else if (failed.length > 0) {
-      core.warning(`${failed.length} template(s) failed to build`);
+    if (failed.length > 0) {
+      core.setFailed(`${failed.length} template(s) failed to build`);
     }
 
     core.info("🎉 Pause Action completed!");
