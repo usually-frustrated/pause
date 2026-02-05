@@ -111,14 +111,29 @@ export async function cloneTemplate(
 
   core.info(`📥 Cloning template: ${cloneUrl}`);
 
-  await exec.exec("gh", [
-    "repo",
-    "clone",
-    cloneUrl,
-    localPath,
-    "--",
-    "--depth=1",
-  ]);
+  try {
+    // First try to clone from main branch
+    await exec.exec("gh", [
+      "repo",
+      "clone",
+      cloneUrl,
+      localPath,
+      "--",
+      "--branch=main",
+      "--depth=1",
+    ]);
+  } catch (error) {
+    // If main branch doesn't exist, fall back to default branch
+    core.info(`⚠️ Main branch not found, falling back to default branch`);
+    await exec.exec("gh", [
+      "repo",
+      "clone",
+      cloneUrl,
+      localPath,
+      "--",
+      "--depth=1",
+    ]);
+  }
 
   return localPath;
 }
