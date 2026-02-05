@@ -1,0 +1,73 @@
+name: E2E Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: End-to-End Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Pause Action with all templates
+        id: pause
+        uses: ./
+        with:
+          resume_file: test/fixtures/fake-resume.json
+          templates: latex-template,typst-template,html-template
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          create_release: false
+          deploy_github_pages: false
+          artifact_name_template: "test-resume-{name}"
+
+      - name: Verify outputs were generated
+        run: |
+          echo "Checking generated files..."
+          ls -lh *.pdf *.html || true
+
+          if [ ! -f "resume.pdf" ]; then
+            echo "❌ PDF not found"
+            exit 1
+          fi
+
+          if [ ! -f "resume.html" ]; then
+            echo "❌ HTML not found"
+            exit 1
+          fi
+
+          echo "✅ All expected files exist"
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-resumes
+          path: |
+            resume.pdf
+            resume.html
+          retention-days: 7
+
+      - name: Validate action outputs
+        run: |
+          echo "Artifacts: ${{ steps.pause.outputs.artifacts }}"
+          echo "Success count: ${{ steps.pause.outputs.success_count }}"
+          echo "Failure count: ${{ steps.pause.outputs.failure_count }}"
+
+          if [ "${{ steps.pause.outputs.failure_count }}" != "0" ]; then
+            echo "❌ Some templates failed to build"
+            exit 1
+          fi
+
+          if [ "${{ steps.pause.outputs.success_count }}" != "3" ]; then
+            echo "❌ Expected 3 successful builds, got ${{ steps.pause.outputs.success_count }}"
+            exit 1
+          fi
+
+          echo "✅ All validations passed"
