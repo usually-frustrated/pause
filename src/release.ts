@@ -213,13 +213,13 @@ export async function createGitHubRelease(
     core.warning(`Could not fetch commit author: ${error}`);
   }
 
-  // Generate a more meaningful release name including author attribution
+  // Generate a more meaningful release name using artifact name template + unique identifier
   let releaseName = `Resume ${tag}`;
   if (artifactNameTemplate && resumeData) {
     const baseReleaseName = parseArtifactNameTemplate(artifactNameTemplate, resumeData);
     // Add short SHA for uniqueness (first 7 chars)
     const shortSha = github.context.sha.substring(0, 7);
-    releaseName = `${baseReleaseName} by ${commitAuthor} (${shortSha})`;
+    releaseName = `${baseReleaseName} (${shortSha})`;
   }
   
   // Add prominent author attribution to changelog
