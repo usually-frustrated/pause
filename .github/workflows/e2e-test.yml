@@ -21,7 +21,10 @@ jobs:
         uses: ./
         with:
           resume_file: test/fixtures/fake-resume.json
-          templates: latex-template,typst-template,html-template
+          templates: |
+            latex-template
+            typst-template
+            html-template
           github_token: ${{ secrets.GITHUB_TOKEN }}
           create_release: false
           deploy_github_pages: false
