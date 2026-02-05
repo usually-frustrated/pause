@@ -272,8 +272,9 @@ async function uploadReleaseAsset(
   // Apply custom artifact name template if provided
   if (artifactNameTemplate && resumeData) {
     const fileExtension = path.extname(fileName);
-    const customBaseName = parseArtifactNameTemplate(artifactNameTemplate, resumeData);
-    fileName = `${customBaseName}${fileExtension}`;
+    const customName = parseArtifactNameTemplate(artifactNameTemplate, resumeData);
+    // Only append extension if template doesn't already include one
+    fileName = customName.includes('.') ? customName : `${customName}${fileExtension}`;
     core.info(`Using custom artifact name: ${fileName}`);
   }
 
@@ -281,11 +282,15 @@ async function uploadReleaseAsset(
 
   core.info(`Uploading ${fileName}...`);
 
+  // GitHub API converts spaces to dots in asset names, so we URL-encode the name
+  // to preserve spaces as %20 which GitHub will properly handle
+  const encodedFileName = fileName.replace(/ /g, '%20');
+
   await octokit.rest.repos.uploadReleaseAsset({
     owner,
     repo,
     release_id: releaseId,
-    name: fileName,
+    name: encodedFileName,
     data: fileContent as unknown as string,
   });
 
