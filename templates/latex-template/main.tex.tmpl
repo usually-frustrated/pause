@@ -92,7 +92,8 @@
 [[ if .work ]]
 \section{Experience}
 [[ range .work ]]
-[[ $dateRange := printf "%s - %s" .startDate (cond .endDate .endDate "Present") ]]
+[[ $endDate := .endDate | default "Present" ]]
+[[ $dateRange := printf "%s - %s" .startDate $endDate ]]
 \subsection{{[[ .position ]] \hfill [[ $dateRange ]]}}
 \subtext{[[ .name ]][[ if .location ]] \hfill [[ .location ]][[ end ]]}
 [[ if .summary ]]
@@ -127,7 +128,7 @@
 [[ else if .area ]]
 [[ $degree = .area ]]
 [[ end ]]
-[[ $year := cond .endDate .endDate .startDate ]]
+[[ $year := .endDate | default .startDate ]]
 \subsection{{[[ $degree ]] \hfill [[ $year ]]}}
 \subtext{[[ .institution ]]}
 \vspace*{3pt}

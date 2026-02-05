@@ -200,12 +200,21 @@ export async function createGitHubRelease(
 ): Promise<ReleaseInfo> {
   core.info(`Creating release ${tag}...`);
 
+  // Generate a more meaningful release name using artifact name template + unique identifier
+  let releaseName = `Resume ${tag}`;
+  if (artifactNameTemplate && resumeData) {
+    const baseReleaseName = parseArtifactNameTemplate(artifactNameTemplate, resumeData);
+    // Add short SHA for uniqueness (first 7 chars)
+    const shortSha = github.context.sha.substring(0, 7);
+    releaseName = `${baseReleaseName} (${shortSha})`;
+  }
+  
   // Create the release
   const { data: release } = await octokit.rest.repos.createRelease({
     owner,
     repo,
     tag_name: tag,
-    name: `Resume ${tag}`,
+    name: releaseName,
     body: changelog,
     draft: false,
     prerelease: false,
