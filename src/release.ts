@@ -213,17 +213,17 @@ export async function createGitHubRelease(
     core.warning(`Could not fetch commit author: ${error}`);
   }
 
-  // Generate a more meaningful release name using artifact name template + unique identifier
+  // Generate a more meaningful release name including author attribution
   let releaseName = `Resume ${tag}`;
   if (artifactNameTemplate && resumeData) {
     const baseReleaseName = parseArtifactNameTemplate(artifactNameTemplate, resumeData);
     // Add short SHA for uniqueness (first 7 chars)
     const shortSha = github.context.sha.substring(0, 7);
-    releaseName = `${baseReleaseName} (${shortSha})`;
+    releaseName = `${baseReleaseName} by ${commitAuthor} (${shortSha})`;
   }
   
-  // Add author attribution to changelog
-  const changelogWithAuthor = `${changelog}\n\n---\n📝 Release created automatically from commit by **${commitAuthor}**`;
+  // Add prominent author attribution to changelog
+  const changelogWithAuthor = `${changelog}\n\n---\n\n## 👤 Author Attribution\n\n**This release was created automatically from commit ${github.context.sha.substring(0, 7)} by ${commitAuthor}**\n\n_The actual commit author who made the changes is shown above - GitHub Actions bot is only the technical creator of this release._`;
   
   // Create the release
   const { data: release } = await octokit.rest.repos.createRelease({
