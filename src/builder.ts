@@ -252,7 +252,8 @@ async function buildLatex(inputPath: string, outputPath: string): Promise<void> 
   ]);
 
   // Rename Tectonic output if it doesn't match outputPath
-  const tectonicExpectedOutput = join(dirname(inputPath), basename(inputPath).replace(extname(inputPath), '.pdf'));
+  const inputBaseName = basename(inputPath).replace(extname(inputPath), '');
+  const tectonicExpectedOutput = join(dirname(outputPath), `${inputBaseName}.pdf`);
   if (tectonicExpectedOutput !== outputPath) {
     core.info(`Renaming Tectonic output: ${tectonicExpectedOutput} -> ${outputPath}`);
     const fs = await import('fs/promises');
