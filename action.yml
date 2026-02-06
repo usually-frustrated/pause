@@ -74,7 +74,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: ~/.bun/install/cache
-        key: pause-bun-${{ hashFiles(format('{0}/bun.lock', github.action_path)) }}
+        key: pause-bun-${{ hashFiles('**/bun.lock') }}
         restore-keys: pause-bun-
 
     - name: Install dependencies
