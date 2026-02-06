@@ -38,12 +38,16 @@ export async function run(): Promise<void> {
       artifactNameTemplate: core.getInput("artifact_name_template") || undefined,
     };
 
+    const workspace = process.env.GITHUB_WORKSPACE || process.cwd();
     core.info("🎬 Starting Pause Action...");
-    core.info(`Resume file: ${inputs.resumeFile}`);
+    core.debug(`CWD: ${process.cwd()}`);
+    core.debug(`Workspace: ${workspace}`);
+    core.debug(`Action Path: ${process.env.GITHUB_ACTION_PATH}`);
+    core.debug(`Resume file: ${inputs.resumeFile}`);
 
     // 2. Load resume.json
-    const workspace = process.env.GITHUB_WORKSPACE || process.cwd();
     const resumePath = resolve(workspace, inputs.resumeFile);
+    core.info(`Loading resume from: ${resumePath}`);
     const resumeContent = await readFile(resumePath, "utf-8");
     const resumeData: ResumeData = JSON.parse(resumeContent);
 
@@ -58,59 +62,61 @@ export async function run(): Promise<void> {
     const templateUrls = parseTemplates(inputs.templates);
     core.info(`📋 Found ${templateUrls.length} template(s)`);
 
-    // 5. Process each template (in parallel)
-    const results: BuildResult[] = await Promise.all(
-      templateUrls.map(async (templateUrl) => {
-        core.startGroup(`🔨 Processing template: ${templateUrl}`);
+    // 5. Process each template (sequentially to avoid race conditions and for clearer logs)
+    const results: BuildResult[] = [];
+    
+    for (const templateUrl of templateUrls) {
+      core.startGroup(`🔨 Processing template: ${templateUrl}`);
 
-        try {
-          // Resolve template (built-in or clone external)
-          const templatePath = await resolveTemplate(
-            templateUrl,
-            inputs.githubToken,
-          );
-          core.info(`✅ Template path: ${templatePath}`);
+      try {
+        // Resolve template (built-in or clone external)
+        const templatePath = await resolveTemplate(
+          templateUrl,
+          inputs.githubToken,
+        );
+        core.info(`✅ Template path: ${templatePath}`);
 
-          // Load manifest
-          const manifest = await loadManifest(templatePath);
-          core.info(`Template: ${manifest.name} (${manifest.type})`);
+        // Load manifest
+        const manifest = await loadManifest(templatePath);
+        core.info(`Template: ${manifest.name} (${manifest.type})`);
 
-          // Prepare data (escape based on template type)
-          const preparedData = prepareResumeData(resumeData, manifest.type);
+        // Prepare data (escape based on template type)
+        const preparedData = prepareResumeData(resumeData, manifest.type);
 
-          // Render template with Gomplate
-          const renderedPath = await renderTemplate(
-            templatePath,
-            manifest,
-            preparedData,
-          );
-          core.info(`✅ Rendered: ${renderedPath}`);
+        // Render template with Gomplate
+        const renderedPath = await renderTemplate(
+          templatePath,
+          manifest,
+          preparedData,
+        );
+        core.info(`✅ Rendered: ${renderedPath}`);
 
-          // Build output (PDF/HTML)
-          const outputPath = await buildTemplate(renderedPath, manifest);
-          core.info(`✅ Built: ${outputPath}`);
+        // Build output (PDF/HTML)
+        const outputPath = await buildTemplate(renderedPath, manifest);
+        core.info(`✅ Built: ${outputPath}`);
 
-          core.endGroup();
-          return {
-            template: templateUrl,
-            outputPath,
-            success: true,
-            templateType: manifest.type,
-          } as BuildResult;
-        } catch (error) {
-          const errorMessage =
-            error instanceof Error ? error.message : String(error);
-          core.error(`❌ Failed to process ${templateUrl}: ${errorMessage}`);
-          core.endGroup();
-          return {
-            template: templateUrl,
-            outputPath: "",
-            success: false,
-            error: errorMessage,
-          } as BuildResult;
-        }
-      }),
-    );
+        results.push({
+          template: templateUrl,
+          outputPath,
+          success: true,
+          templateType: manifest.type,
+        } as BuildResult);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        const stack = error instanceof Error ? error.stack : "";
+        core.error(`❌ Failed to process ${templateUrl}: ${errorMessage}`);
+        if (stack) core.debug(stack);
+        
+        results.push({
+          template: templateUrl,
+          outputPath: "",
+          success: false,
+          error: errorMessage,
+        } as BuildResult);
+      }
+      core.endGroup();
+    }
 
     // 6. Summary
     core.startGroup("📊 Build Summary");

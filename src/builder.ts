@@ -151,13 +151,18 @@ export async function renderTemplate(
   const entrypointPath = join(templatePath, manifest.entrypoint);
   const templateContent = await readFile(entrypointPath, 'utf-8');
 
+  // Create a unique temporary directory for this specific build
+  const buildId = Math.random().toString(36).substring(2, 10);
+  const tempBuildDir = join(process.env.RUNNER_TEMP || '/tmp', `pause-build-${buildId}`);
+  await mkdir(tempBuildDir, { recursive: true });
+  core.debug(`Created temp build directory: ${tempBuildDir}`);
+
   // Determine output filename
-  const outputExt = extname(manifest.entrypoint).replace('.tmpl', '');
   const outputFilename = basename(manifest.entrypoint).replace('.tmpl', '');
-  const outputPath = join(OUTPUT_DIR, outputFilename);
+  const outputPath = join(tempBuildDir, outputFilename);
 
   // Create data file for Gomplate
-  const dataPath = join(templatePath, '.resume-data.json');
+  const dataPath = join(tempBuildDir, '.resume-data.json');
   await writeFile(dataPath, JSON.stringify(resumeData, null, 2));
 
   // Prepare Gomplate command with custom delimiters and functions
@@ -174,7 +179,7 @@ export async function renderTemplate(
 
   await exec.exec('gomplate', args);
 
-  // Copy any .sty files from template directory to output directory for LaTeX compilation
+  // Copy any .sty files from template directory to the temp build directory for LaTeX compilation
   if (manifest.type === 'latex') {
     const fs = await import('fs/promises');
     try {
@@ -182,19 +187,15 @@ export async function renderTemplate(
       for (const file of templateFiles) {
         if (file.endsWith('.sty')) {
           const srcPath = join(templatePath, file);
-          const destPath = join(dirname(outputPath), file);
+          const destPath = join(tempBuildDir, file);
           await fs.copyFile(srcPath, destPath);
-          core.info(`Copied ${file} to output directory`);
+          core.info(`Copied ${file} to build directory`);
         }
       }
     } catch (error) {
       core.warning(`Failed to copy .sty files: ${error}`);
     }
   }
-
-  // Post-process: inject custom sanitization functions
-  // This is a workaround - ideally we'd use Gomplate plugins
-  // For now, we'll rely on template authors to use proper escaping
 
   core.info(`Rendered ${manifest.entrypoint} -> ${outputPath}`);
 
@@ -208,58 +209,65 @@ export async function buildTemplate(
   renderedPath: string,
   manifest: TemplateManifest
 ): Promise<string> {
+  const buildDir = dirname(renderedPath);
   const outputFilename = `${manifest.output_name}.${getOutputExtension(manifest.type)}`;
-  const outputPath = join(OUTPUT_DIR, outputFilename);
+  const finalOutputPath = join(OUTPUT_DIR, outputFilename);
+  const intermediateOutputPath = join(buildDir, outputFilename);
 
   if (manifest.build_cmd) {
     // Custom build command
-    core.info(`Running custom build command: ${manifest.build_cmd}`);
-    await exec.exec('sh', ['-c', manifest.build_cmd]);
-    return outputPath;
+    core.info(`Running custom build command in ${buildDir}: ${manifest.build_cmd}`);
+    await exec.exec('sh', ['-c', manifest.build_cmd], { cwd: buildDir });
+    
+    // Move to final destination
+    const fs = await import('fs/promises');
+    await fs.rename(intermediateOutputPath, finalOutputPath);
+    return finalOutputPath;
   }
 
   // Use default build strategy based on type
   switch (manifest.type) {
     case 'latex':
-      await buildLatex(renderedPath, outputPath);
+      await buildLatex(renderedPath, intermediateOutputPath);
       break;
 
     case 'typst':
-      await buildTypst(renderedPath, outputPath);
+      await buildTypst(renderedPath, intermediateOutputPath);
       break;
 
     case 'html':
     case 'markdown':
-      // Move/rename rendered file to match output_name
-      // The renderedPath is join(OUTPUT_DIR, basename(manifest.entrypoint).replace('.tmpl', ''))
-      // We want it at join(OUTPUT_DIR, `${manifest.output_name}.${getOutputExtension(manifest.type)}`)
-      if (renderedPath !== outputPath) {
-        core.info(`Renaming static output: ${renderedPath} -> ${outputPath}`);
+      // renderedPath is already the HTML/MD file in buildDir
+      if (renderedPath !== intermediateOutputPath) {
         const fs = await import('fs/promises');
-        await fs.rename(renderedPath, outputPath);
+        await fs.rename(renderedPath, intermediateOutputPath);
       }
-      return outputPath;
+      break;
 
     default:
       throw new Error(`Unsupported template type: ${manifest.type}`);
   }
 
-  return outputPath;
+  // Move the final artifact from buildDir to OUTPUT_DIR
+  core.info(`Moving artifact: ${intermediateOutputPath} -> ${finalOutputPath}`);
+  const fs = await import('fs/promises');
+  await fs.rename(intermediateOutputPath, finalOutputPath);
+
+  return finalOutputPath;
 }
 
 /**
  * Build LaTeX using Tectonic
  */
 async function buildLatex(inputPath: string, outputPath: string): Promise<void> {
+  const buildDir = dirname(inputPath);
   core.info(`Building LaTeX with Tectonic: ${inputPath} -> ${outputPath}`);
-  core.info(`Input path: ${inputPath}`);
-  core.info(`Output directory: ${dirname(outputPath)}`);
 
   try {
     // Tectonic automatically handles package installation
     await exec.exec('tectonic', [
       inputPath,
-      '--outdir', dirname(outputPath)
+      '--outdir', buildDir
     ]);
   } catch (error) {
     core.error(`Tectonic failed with error: ${error}`);
@@ -277,34 +285,17 @@ async function buildLatex(inputPath: string, outputPath: string): Promise<void> 
     throw error;
   }
 
-  // Rename Tectonic output if it doesn't match outputPath
+  // Tectonic output is always based on the input filename
   const inputBaseName = basename(inputPath).replace(extname(inputPath), '');
-  const tectonicExpectedOutput = join(dirname(outputPath), `${inputBaseName}.pdf`);
-  core.info(`Expected Tectonic output: ${tectonicExpectedOutput}`);
-  core.info(`Final output path: ${outputPath}`);
+  const tectonicOutput = join(buildDir, `${inputBaseName}.pdf`);
   
-  if (tectonicExpectedOutput !== outputPath) {
-    core.info(`Renaming Tectonic output: ${tectonicExpectedOutput} -> ${outputPath}`);
+  if (tectonicOutput !== outputPath) {
+    core.debug(`Renaming Tectonic output: ${tectonicOutput} -> ${outputPath}`);
     const fs = await import('fs/promises');
-    try {
-      await fs.rename(tectonicExpectedOutput, outputPath);
-      core.info(`Successfully renamed to: ${outputPath}`);
-    } catch (error) {
-      core.error(`Failed to rename PDF: ${error}`);
-      throw error;
-    }
-  }
-  
-  // Verify the final PDF exists
-  const fs = await import('fs/promises');
-  try {
-    await fs.access(outputPath);
-    core.info(`✅ PDF verified at: ${outputPath}`);
-  } catch (error) {
-    core.error(`❌ PDF not found at expected location: ${outputPath}`);
-    throw error;
+    await fs.rename(tectonicOutput, outputPath);
   }
 }
+
 
 /**
  * Build Typst using typst CLI
