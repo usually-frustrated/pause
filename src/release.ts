@@ -282,15 +282,11 @@ async function uploadReleaseAsset(
 
   core.info(`Uploading ${fileName}...`);
 
-  // GitHub API converts spaces to dots in asset names, so we URL-encode the name
-  // to preserve spaces as %20 which GitHub will properly handle
-  const encodedFileName = fileName.replace(/ /g, '%20');
-
   await octokit.rest.repos.uploadReleaseAsset({
     owner,
     repo,
     release_id: releaseId,
-    name: encodedFileName,
+    name: fileName,
     data: fileContent as unknown as string,
   });
 
