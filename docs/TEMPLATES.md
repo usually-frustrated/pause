@@ -1,6 +1,6 @@
 # Template System Architecture
 
-> **Last Updated**: 2026-02-03  
+> **Last Updated**: 2026-02-06  
 > **Documentation follows the 5Cs**: Concise, Complete, Correct, Confident yet Humble, Clear. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 Pause uses a **three-tier template discovery system** for maximum flexibility.
@@ -14,7 +14,7 @@ Pause uses a **three-tier template discovery system** for maximum flexibility.
 │  ✓ No cloning required                                     │
 │  ✓ Fast execution                                          │
 │                                                             │
-│  Usage: latex-minimal, typst-modern, html-simple
+│  Usage: latex-template, typst-template, html-template
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
@@ -38,42 +38,42 @@ Pause uses a **three-tier template discovery system** for maximum flexibility.
 
 ## Built-in Templates (Tier 1)
 
-### 📄 Latex Minimal
+### 📄 LaTeX Template
 
-**File:** `templates/latex-minimal/`  
+**File:** `templates/latex-template/`  
 **Type:** LaTeX → PDF  
-**Style:** Professional, single-column, classic typography
+**Style:** Professional, single-column, classic typography (based on TLCresume)
 
 ```yaml
-templates: latex-minimal
+templates: latex-template
 ```
 
 **Best for:** Traditional industries, ATS systems, clean presentation
 
 ---
 
-### ✨ Typst Modern
+### ✨ Typst Template
 
-**File:** `templates/typst-modern/`  
+**File:** `templates/typst-template/`  
 **Type:** Typst → PDF  
 **Style:** Contemporary, blue accents, modern spacing
 
 ```yaml
-templates: typst-modern
+templates: typst-template
 ```
 
 **Best for:** Tech companies, creative roles, modern industries
 
 ---
 
-### 🌐 HTML Simple
+### 🌐 HTML Template
 
-**File:** `templates/html-simple/`  
+**File:** `templates/html-template/`  
 **Type:** HTML → Web  
 **Style:** Responsive, gradient header, print-friendly
 
 ```yaml
-templates: html-simple
+templates: html-template
 ```
 
 **Best for:** GitHub Pages, portfolios, web deployment
@@ -123,10 +123,10 @@ See [TEMPLATE_GUIDE.md](TEMPLATE_GUIDE.md) for the complete guide.
 ```typescript
 // The action parses template references in order:
 
-"latex-minimal"              → builtin:latex-minimal
-"typst-modern"               → builtin:typst-modern
-"html-simple"                → builtin:html-simple
-"builtin:latex-minimal"      → builtin:latex-minimal (explicit)
+"latex-template"             → builtin:latex-template
+"typst-template"             → builtin:typst-template
+"html-template"              → builtin:html-template
+"builtin:latex-template"     → builtin:latex-template (explicit)
 
 "official:academic-cv"       → github.com/usually-frustrated/pause-templates/academic-cv
 

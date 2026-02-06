@@ -1,6 +1,6 @@
 # Template Creation Guide
 
-> **Last Updated**: 2026-02-03  
+> **Last Updated**: 2026-02-06  
 > **Documentation follows the 5Cs**: Concise, Complete, Correct, Confident yet Humble, Clear. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 Complete guide for creating custom Pause templates.
@@ -148,7 +148,7 @@ The entire `resume.json` is available at the root context:
 
 ### Important Notes
 
-- **No escaping needed**: Gomplate handles special LaTeX characters
+- **Auto-Escaping**: Pause automatically escapes special characters (like `&`, `%`, `$`) for the chosen template type before rendering. You don't need to manually escape data in your templates.
 - **Packages auto-installed**: Tectonic downloads packages on-demand
 - **Use standard LaTeX**: All standard packages are available
 
@@ -310,11 +310,11 @@ github:you/pause-template-mytemplate@v1.0.0
 
 ## Examples
 
-See official templates:
+See built-in templates in the Pause repository:
 
-- `usually-frustrated/pause-template-minimal` - Basic LaTeX
-- `usually-frustrated/pause-template-academic` - Academic CV
-- `usually-frustrated/pause-template-modern` - Modern HTML
+- `templates/latex-template`
+- `templates/typst-template`
+- `templates/html-template`
 
 ## Need Help?
 

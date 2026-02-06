@@ -95,13 +95,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Historic Documents
 
-The following documents are preserved for reference but represent completed work:
+The following documents are preserved for reference in the `docs/history` directory:
 
-- **docs/initial-spec.md** (2026-01-27): Original system design
-- **docs/pause-implementation-paln.md** (2026-01-27): Implementation roadmap
-  - Phase 1 (T1.1-T1.4): ✅ Completed 2026-02-03
-  - Phase 1.5: ✅ Three-tier template system added
-  - Phase 2-3: Deferred (testing, official templates)
+- **docs/history/historic-initial-spec.md**: Original system design
+- **docs/history/historic-implementation-plan.md**: Original implementation roadmap
 
 ## Project Timeline
 
@@ -133,4 +130,4 @@ Not applicable - initial release.
 
 ---
 
-**Current Status**: Production-ready with built-in templates. See [STATUS.md](docs/STATUS.md) for details.
+**Current Status**: Production-ready with built-in templates. See the [documentation folder](docs/) for details.

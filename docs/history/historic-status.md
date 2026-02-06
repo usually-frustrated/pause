@@ -1,8 +1,10 @@
+# 📜 Historic: Project Status (Feb 3, 2026)
+
+> **Archive Note**: This file tracked the state of the project up until version 0.2.0. As of version 1.2.0, status tracking has moved to the root `CHANGELOG.md` and the E2E test suite.
+
+---
+
 # Project Status
-
-> **Documentation follows the 5Cs**: Concise, Complete, Correct, Confident yet Humble, Clear. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
-**Last Updated**: 2026-02-03
 
 ## Completed Tasks ✅
 

@@ -1,7 +1,10 @@
-# Proposal: Descriptive Template Names
+# 📜 Historic: Proposal - Descriptive Template Names
 
-> **Status**: Proposed  
-> **Goal**: Make it clear which engine/format a built-in template uses.
+> **Archive Note**: This proposal was **ACCEPTED** and implemented. Built-in templates were renamed to include their engine/type (e.g., `latex-template`, `typst-template`) to improve clarity for users.
+
+---
+
+# Proposal: Descriptive Template Names
 
 ## Motivation
 

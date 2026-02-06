@@ -1,7 +1,10 @@
-# Plan: NPM Package for Pause Template Authors
+# 📜 Historic: Plan - NPM Package for Pause Template Authors
 
-> **Status**: Planning  
-> **Target**: `@usually-frustrated/pause-sdk` (tentative)
+> **Archive Note**: This plan explored creating an SDK for template authors. While still a valid future direction, it is not currently prioritized as the focus shifted to action stability and E2E testing in Feb 2026.
+
+---
+
+# Plan: NPM Package for Pause Template Authors
 
 ## Objectives
 

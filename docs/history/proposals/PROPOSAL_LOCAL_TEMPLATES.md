@@ -1,7 +1,10 @@
-# Proposal: Local Template Support
+# 📜 Historic: Proposal - Local Template Support
 
-> **Status**: Proposed  
-> **Goal**: Allow users to keep templates in their own repository.
+> **Archive Note**: This proposal suggested allowing templates to be stored locally within the user's repository. This feature remains a candidate for future versions but was not included in the initial v1.x stable releases.
+
+---
+
+# Proposal: Local Template Support
 
 ## Motivation
 

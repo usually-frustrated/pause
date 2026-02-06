@@ -1,9 +1,10 @@
-# Project Pause: System Specification
+# 📜 Historic: System Specification
 
-> **Status**: 📜 Historic Document  
-> **Created**: 2026-01-27  
-> **Purpose**: Original design specification - preserved for reference  
-> **Current Docs**: See [STATUS.md](STATUS.md) for implementation status
+> **Archive Note**: This was the original design document created at project inception (2026-01-27). It defines the vision of "Pause > Resume" and the core data flow. While the implementation has evolved (e.g., adding sequential processing and more robust artifact handling), the fundamental architecture remains aligned with this spec.
+
+---
+
+# Project Pause: System Specification
 
 **Version:** 0.1.0 (Draft)  
 **Concept:** "Pause > Resume"
