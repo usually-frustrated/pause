@@ -2,7 +2,7 @@
  * Template management: parsing, cloning, and manifest loading
  * Supports three-tier template system:
  *   1. Built-in templates (in this repo)
- *   2. Official templates (pause-org/pause-templates)
+ *   2. Official templates (usually-frustrated/pause-templates)
  *   3. Custom templates (any GitHub repo)
  */
 
@@ -20,7 +20,7 @@ const BUILTIN_TEMPLATES_DIR = resolve(__dirname, "../templates");
  * Parse the templates input string into template references
  * Supports three tiers:
  *   1. Built-in: "minimal", "modern", "simple" or "builtin:minimal"
- *   2. Official: "official:template-name" (from pause-org/pause-templates)
+ *   2. Official: "official:template-name" (from usually-frustrated/pause-templates)
  *   3. Custom: "github:owner/repo", "https://github.com/owner/repo", or "owner/repo"
  */
 export function parseTemplates(templatesInput: string): string[] {
@@ -42,7 +42,7 @@ export function parseTemplates(templatesInput: string): string[] {
     // Handle official: prefix
     if (line.startsWith("official:")) {
       const templateName = line.replace("official:", "");
-      return `https://github.com/pause-org/pause-templates/${templateName}`;
+      return `https://github.com/usually-frustrated/pause-templates/${templateName}`;
     }
 
     // Handle github: prefix

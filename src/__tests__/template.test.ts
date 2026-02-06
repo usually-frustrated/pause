@@ -74,7 +74,7 @@ describe("Template Parser", () => {
   it("should handle official templates", () => {
     const templates = "official:latex-resume";
     const parsed = parseTemplates(templates);
-    expect(parsed).toEqual(["https://github.com/pause-org/pause-templates/latex-resume"]);
+    expect(parsed).toEqual(["https://github.com/usually-frustrated/pause-templates/latex-resume"]);
   });
 
   it("should handle full URLs", () => {

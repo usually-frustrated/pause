@@ -35,7 +35,7 @@ GitHub Release (automatic, with changelog)
 | Tier        | Syntax                        | Location                    | Clone? |
 | ----------- | ----------------------------- | --------------------------- | ------ |
 | 1. Built-in | `minimal`, `modern`, `simple` | `/templates/*`              | No     |
-| 2. Official | `official:name`               | `pause-org/pause-templates` | Yes    |
+| 2. Official | `official:name`               | `usually-frustrated/pause-templates` | Yes    |
 | 3. Custom   | `github:user/repo`            | Any GitHub repo             | Yes    |
 
 ## Key Files (What They Do)

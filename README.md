@@ -52,7 +52,7 @@ Your `resume.json` should follow the [JSON Resume schema](https://jsonresume.org
 Pause uses a three-tier discovery system:
 
 1.  **Built-in**: `latex-template` (LaTeX), `typst-template` (Typst), `html-template` (HTML).
-2.  **Official**: `official:template-name` (from `pause-org/pause-templates`).
+2.  **Official**: `official:template-name` (from `usually-frustrated/pause-templates`).
 3.  **Custom**: `github:user/repo` or any standard repository path (e.g., `user/repo`).
 
 ### Example

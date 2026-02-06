@@ -1,5 +1,5 @@
 {
-  "name": "@pause-org/action",
+  "name": "@frustrated/action",
   "version": "1.2.0",
   "description": "GitHub Action to orchestrate resume generation from resume.json using templates",
   "type": "module",

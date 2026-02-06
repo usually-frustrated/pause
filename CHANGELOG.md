@@ -7,7 +7,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Planned
-- Official template repository (`pause-org/pause-templates`)
+- Official template repository (`usually-frustrated/pause-templates`)
 - Template preview generation
 
 ## [1.2.0] - 2026-02-06

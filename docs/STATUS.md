@@ -42,7 +42,7 @@
   - Three-tier discovery: builtin → official → custom
   - `resolveTemplate()` function for smart template lookup
   - Support for shorthand syntax (e.g., `minimal` → `builtin:minimal`)
-  - Official template support: `official:name` → `pause-org/pause-templates`
+  - Official template support: `official:name` → `usually-frustrated/pause-templates`
 
 - ✅ **Documentation**
   - Updated README with three-tier system explanation
@@ -80,7 +80,7 @@ The action is **fully functional** with built-in templates:
 
 ### Phase 2: Official Template Repository (Optional)
 
-- ⏳ **Create `pause-org/pause-templates` repository**
+- ⏳ **Create `usually-frustrated/pause-templates` repository**
   - Curated template collection
   - Community contributions
   - Examples: academic-cv, creative-portfolio, executive, two-column
@@ -157,7 +157,7 @@ Output: resume.pdf or resume.html
 | Tier        | Syntax              | Example                | Location                    |
 | ----------- | ------------------- | ---------------------- | --------------------------- |
 | 1. Built-in | `minimal`           | `minimal`              | This repo: `templates/`     |
-| 2. Official | `official:name`     | `official:academic-cv` | `pause-org/pause-templates` |
+| 2. Official | `official:name`     | `official:academic-cv` | `usually-frustrated/pause-templates` |
 | 3. Custom   | `github:owner/repo` | `github:you/custom`    | Any GitHub repo             |
 
 ## How to Use (Current State)

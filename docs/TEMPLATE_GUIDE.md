@@ -312,9 +312,9 @@ github:you/pause-template-mytemplate@v1.0.0
 
 See official templates:
 
-- `pause-org/pause-template-minimal` - Basic LaTeX
-- `pause-org/pause-template-academic` - Academic CV
-- `pause-org/pause-template-modern` - Modern HTML
+- `usually-frustrated/pause-template-minimal` - Basic LaTeX
+- `usually-frustrated/pause-template-academic` - Academic CV
+- `usually-frustrated/pause-template-modern` - Modern HTML
 
 ## Need Help?
 

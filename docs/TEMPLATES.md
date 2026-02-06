@@ -18,7 +18,7 @@ Pause uses a **three-tier template discovery system** for maximum flexibility.
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│  Tier 2: Official Templates (pause-org/pause-templates)    │
+│  Tier 2: Official Templates (usually-frustrated/pause-templates)    │
 │  ✓ Curated by Pause team                                   │
 │  ✓ Community contributions                                 │
 │  ✓ Version controlled                                      │
@@ -80,7 +80,7 @@ templates: html-simple
 
 ## Official Templates (Tier 2)
 
-_Coming soon in `pause-org/pause-templates` repository_
+_Coming soon in `usually-frustrated/pause-templates` repository_
 
 The official template repository will include:
 
@@ -128,7 +128,7 @@ See [TEMPLATE_GUIDE.md](TEMPLATE_GUIDE.md) for the complete guide.
 "html-simple"                → builtin:html-simple
 "builtin:latex-minimal"      → builtin:latex-minimal (explicit)
 
-"official:academic-cv"       → github.com/pause-org/pause-templates/academic-cv
+"official:academic-cv"       → github.com/usually-frustrated/pause-templates/academic-cv
 
 "github:user/repo"           → github.com/user/repo
 "https://github.com/..."     → Direct URL
@@ -218,7 +218,7 @@ templates: |
 ## Next Steps
 
 1. **Use built-in templates** - Start with `latex-minimal`, `typst-modern`, or `html-simple`
-2. **Explore official templates** - Check `pause-org/pause-templates` (coming soon)
+2. **Explore official templates** - Check `usually-frustrated/pause-templates` (coming soon)
 3. **Create custom templates** - Follow the [Template Guide](TEMPLATE_GUIDE.md)
 4. **Share your templates** - Publish with `pause-template-*` naming
 

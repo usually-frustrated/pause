@@ -227,8 +227,8 @@ jobs:
           # The Template List (The "Canvas")
           # Format: provider:user/repo or path/to/local
           templates: |
-            github:pause-org/pause-template-minimal
-            github:pause-org/pause-template-academic
+            github:usually-frustrated/pause-template-minimal
+            github:usually-frustrated/pause-template-academic
             github:another-user/pause-template-fancy
 
           # GitHub Token for API access (cloning templates + releasing)
@@ -239,7 +239,7 @@ jobs:
 
 ### Phase 1: The Core Action
 
-- [ ] Create `pause-org/action` repository.
+- [ ] Create `usually-frustrated/action` repository.
 - [ ] Implement `action.yml` (inputs definition).
 - [ ] Write logic (Node.js or Docker) to:
 - [ ] Install Gomplate/Tectonic/Typst binaries.
@@ -249,8 +249,8 @@ jobs:
 
 ### Phase 2: The Template Registry
 
-- [ ] Create `pause-org/pause-template-minimal` (LaTeX/Tectonic example).
-- [ ] Create `pause-org/pause-template-typst` (Typst example).
+- [ ] Create `usually-frustrated/pause-template-minimal` (LaTeX/Tectonic example).
+- [ ] Create `usually-frustrated/pause-template-typst` (Typst example).
 - [ ] Document the `template.yaml` spec for community contributors.
 
 ### Phase 3: The Helper Functions
