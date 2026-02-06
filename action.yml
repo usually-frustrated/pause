@@ -38,10 +38,44 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Cache build tools (gomplate, tectonic, typst)
+      uses: actions/cache@v4
+      with:
+        path: /opt/hostedtoolcache/gomplate/4.3.0
+        key: pause-gomplate-4.3.0
+      id: cache-gomplate
+
+    - name: Cache build tools (tectonic)
+      uses: actions/cache@v4
+      with:
+        path: /opt/hostedtoolcache/tectonic/0.15.0
+        key: pause-tectonic-0.15.0
+      id: cache-tectonic
+
+    - name: Cache build tools (typst)
+      uses: actions/cache@v4
+      with:
+        path: /opt/hostedtoolcache/typst/0.11.0
+        key: pause-typst-0.11.0
+      id: cache-typst
+
+    - name: Cache Tectonic TeX Live packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/Tectonic
+        key: pause-tectonic-texlive
+
     - name: Setup Bun
       uses: oven-sh/setup-bun@v2
       with:
         bun-version: latest
+
+    - name: Cache Bun dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.bun/install/cache
+        key: pause-bun-${{ hashFiles(format('{0}/bun.lock', github.action_path)) }}
+        restore-keys: pause-bun-
 
     - name: Install dependencies
       shell: bash

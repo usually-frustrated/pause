@@ -58,59 +58,59 @@ export async function run(): Promise<void> {
     const templateUrls = parseTemplates(inputs.templates);
     core.info(`📋 Found ${templateUrls.length} template(s)`);
 
-    // 5. Process each template
-    const results: BuildResult[] = [];
+    // 5. Process each template (in parallel)
+    const results: BuildResult[] = await Promise.all(
+      templateUrls.map(async (templateUrl) => {
+        core.startGroup(`🔨 Processing template: ${templateUrl}`);
 
-    for (const templateUrl of templateUrls) {
-      core.startGroup(`🔨 Processing template: ${templateUrl}`);
+        try {
+          // Resolve template (built-in or clone external)
+          const templatePath = await resolveTemplate(
+            templateUrl,
+            inputs.githubToken,
+          );
+          core.info(`✅ Template path: ${templatePath}`);
 
-      try {
-        // Resolve template (built-in or clone external)
-        const templatePath = await resolveTemplate(
-          templateUrl,
-          inputs.githubToken,
-        );
-        core.info(`✅ Template path: ${templatePath}`);
+          // Load manifest
+          const manifest = await loadManifest(templatePath);
+          core.info(`Template: ${manifest.name} (${manifest.type})`);
 
-        // Load manifest
-        const manifest = await loadManifest(templatePath);
-        core.info(`Template: ${manifest.name} (${manifest.type})`);
+          // Prepare data (escape based on template type)
+          const preparedData = prepareResumeData(resumeData, manifest.type);
 
-        // Prepare data (escape based on template type)
-        const preparedData = prepareResumeData(resumeData, manifest.type);
+          // Render template with Gomplate
+          const renderedPath = await renderTemplate(
+            templatePath,
+            manifest,
+            preparedData,
+          );
+          core.info(`✅ Rendered: ${renderedPath}`);
 
-        // Render template with Gomplate
-        const renderedPath = await renderTemplate(
-          templatePath,
-          manifest,
-          preparedData,
-        );
-        core.info(`✅ Rendered: ${renderedPath}`);
+          // Build output (PDF/HTML)
+          const outputPath = await buildTemplate(renderedPath, manifest);
+          core.info(`✅ Built: ${outputPath}`);
 
-        // Build output (PDF/HTML)
-        const outputPath = await buildTemplate(renderedPath, manifest);
-        core.info(`✅ Built: ${outputPath}`);
-
-        results.push({
-          template: templateUrl,
-          outputPath,
-          success: true,
-          templateType: manifest.type,
-        });
-      } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : String(error);
-        core.error(`❌ Failed to process ${templateUrl}: ${errorMessage}`);
-        results.push({
-          template: templateUrl,
-          outputPath: "",
-          success: false,
-          error: errorMessage,
-        });
-      }
-
-      core.endGroup();
-    }
+          core.endGroup();
+          return {
+            template: templateUrl,
+            outputPath,
+            success: true,
+            templateType: manifest.type,
+          } as BuildResult;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error ? error.message : String(error);
+          core.error(`❌ Failed to process ${templateUrl}: ${errorMessage}`);
+          core.endGroup();
+          return {
+            template: templateUrl,
+            outputPath: "",
+            success: false,
+            error: errorMessage,
+          } as BuildResult;
+        }
+      }),
+    );
 
     // 6. Summary
     core.startGroup("📊 Build Summary");

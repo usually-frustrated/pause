@@ -90,13 +90,14 @@ export async function installBinaries(): Promise<void> {
 
   await mkdir(BIN_DIR, { recursive: true });
 
-  for (const binary of binaries) {
+  // Download and install all binaries in parallel
+  await Promise.all(binaries.map(async (binary) => {
     const cachedPath = tc.find(binary.name, binary.version);
 
     if (cachedPath) {
       core.info(`✅ ${binary.name} v${binary.version} (cached)`);
       core.addPath(cachedPath);
-      continue;
+      return;
     }
 
     core.info(`📥 Downloading ${binary.name} v${binary.version}...`);
@@ -109,25 +110,14 @@ export async function installBinaries(): Promise<void> {
       if (binary.url.endsWith('.tar.gz')) {
         const extractPath = await tc.extractTar(downloadPath);
         toolPath = join(extractPath, binary.extractDir);
-        core.info(`Debug: extractPath=${extractPath}, extractDir=${binary.extractDir}, toolPath=${toolPath}`);
       } else if (binary.url.endsWith('.tar.xz')) {
         const extractPath = await tc.extractTar(downloadPath, undefined, 'x');
         toolPath = join(extractPath, binary.extractDir);
-        core.info(`Debug: extractPath=${extractPath}, extractDir=${binary.extractDir}, toolPath=${toolPath}`);
       } else {
         throw new Error(`Unsupported archive format: ${binary.url}`);
       }
-
-      try {
-        const stats = await import('fs/promises').then(fs => fs.stat(toolPath));
-        core.info(`Debug: toolPath exists, isDirectory=${stats.isDirectory()}`);
-      } catch (e) {
-        core.info(`Debug: toolPath does not exist or error: ${e}`);
-      }
-
     } else {
       // Single binary file
-      // Use a specific directory for this tool to avoid caching unrelated files
       toolPath = join(BIN_DIR, `${binary.name}-${binary.version}`);
       const binPath = join(toolPath, binary.name);
 
@@ -141,7 +131,7 @@ export async function installBinaries(): Promise<void> {
     core.addPath(cachedToolPath);
 
     core.info(`✅ Installed ${binary.name} v${binary.version}`);
-  }
+  }));
 
   // Verify installations
   await exec.exec('gomplate', ['--version']);
