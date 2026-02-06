@@ -1,11 +1,11 @@
-name: Update Major Version Tag
+name: Update v1 Tag
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
 
 jobs:
-  update-major-tag:
+  update-v1-tag:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -13,38 +13,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Update major version tag
+      - name: Move v1 tag to HEAD
         run: |
-          # Extract version from release tag (e.g., v2.1.0 -> v2)
-          TAG="${{ github.event.release.tag_name }}"
-
-          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "⚠️  Tag $TAG doesn't match semver pattern (vX.Y.Z), skipping"
-            exit 0
-          fi
-
-          MAJOR_VERSION=$(echo "$TAG" | cut -d. -f1)
-
-          echo "📌 Release tag: $TAG"
-          echo "📌 Major version: $MAJOR_VERSION"
-
-          # Configure git
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Delete existing major version tag if it exists
-          if git rev-parse "$MAJOR_VERSION" >/dev/null 2>&1; then
-            echo "🗑️  Deleting existing $MAJOR_VERSION tag"
-            git tag -d "$MAJOR_VERSION"
-            git push origin ":refs/tags/$MAJOR_VERSION" || true
-          fi
-
-          # Create new major version tag pointing to this release
-          echo "✨ Creating $MAJOR_VERSION tag pointing to $TAG"
-          git tag "$MAJOR_VERSION" "$TAG"
-          git push origin "$MAJOR_VERSION" --force
-
-          echo "✅ Users on @$MAJOR_VERSION will now get $TAG"
+          git tag -f v1 HEAD
+          git push origin v1 --force
