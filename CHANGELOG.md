@@ -7,12 +7,23 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Planned
-- End-to-end GitHub Actions testing
-- Artifact upload to GitHub Releases
 - Official template repository (`pause-org/pause-templates`)
 - Template preview generation
 
-## [0.2.0] - 2026-02-03
+## [1.2.0] - 2026-02-06
+
+### Added
+- **Full End-to-End Testing**: New `e2e-test.yml` workflow that validates all built-in templates.
+- **Action Outputs**: Declared `artifacts`, `success_count`, `failure_count`, `release_url`, and `release_tag` in `action.yml` for composite action compatibility.
+- **Environment Logging**: Added detailed debug logging for CWD, Workspace, and Action Path.
+
+### Fixed
+- **Cross-Device Move Support**: Implemented robust artifact moving (copy + unlink) to handle environments where `/tmp` and `GITHUB_WORKSPACE` are on different filesystems.
+- **Race Condition Prevention**: Switched template processing from parallel to sequential and implemented unique temporary build directories per template.
+- **Cache Reliability**: Updated `hashFiles` to use a glob pattern (`**/bun.lock`) and tracked `bun.lock` in the repository to prevent cache-key generation failures.
+- **Missing Lockfile**: Added `bun.lock` to the repository to ensure consistent builds and caching.
+
+## [1.1.0] - 2026-02-05
 
 ### Added
 - **Three-tier template system**: Built-in → Official → Custom
