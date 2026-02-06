@@ -35,6 +35,22 @@ inputs:
   artifact_name_template:
     description: "Template string for artifact names (e.g., '{name} {MMM} {yyyy} Resume'). Use {name} for resume name, {yyyy} for year, {MMM} for month"
     required: false
+outputs:
+  artifacts:
+    description: "Comma-separated paths to generated files (e.g., resume.pdf)"
+    value: ${{ steps.pause-logic.outputs.artifacts }}
+  success_count:
+    description: "Number of templates that built successfully"
+    value: ${{ steps.pause-logic.outputs.success_count }}
+  failure_count:
+    description: "Number of templates that failed to build"
+    value: ${{ steps.pause-logic.outputs.failure_count }}
+  release_url:
+    description: "URL of created GitHub release (if create_release: true)"
+    value: ${{ steps.pause-logic.outputs.release_url }}
+  release_tag:
+    description: "Tag name of created release (if create_release: true)"
+    value: ${{ steps.pause-logic.outputs.release_tag }}
 runs:
   using: "composite"
   steps:
@@ -84,6 +100,7 @@ runs:
         bun install
 
     - name: Run Pause Action
+      id: pause-logic
       shell: bash
       run: |
         cd ${{ github.action_path }}
