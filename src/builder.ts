@@ -251,7 +251,15 @@ export async function buildTemplate(
   // Move the final artifact from buildDir to OUTPUT_DIR
   core.info(`Moving artifact: ${intermediateOutputPath} -> ${finalOutputPath}`);
   const fs = await import('fs/promises');
-  await fs.rename(intermediateOutputPath, finalOutputPath);
+  try {
+    // Try rename first (faster, works on same filesystem)
+    await fs.rename(intermediateOutputPath, finalOutputPath);
+  } catch (error) {
+    // Fallback to copy + unlink for cross-device moves
+    core.debug(`Rename failed (possibly cross-device), falling back to copy: ${error}`);
+    await fs.copyFile(intermediateOutputPath, finalOutputPath);
+    await fs.unlink(intermediateOutputPath);
+  }
 
   return finalOutputPath;
 }
