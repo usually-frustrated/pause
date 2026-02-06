@@ -82,16 +82,6 @@ with:
 - `{yyyy}` - Current year (4 digits, e.g., "2024")
 - `{MMM}` - Current month (3-letter abbreviation, e.g., "Jan", "Feb")
 
-### Version-Independent Templates
-
-This action automatically pulls templates from the `main` branch of template repositories, regardless of which action version you use. This means:
-
-- **Always up-to-date**: Templates get the latest features and fixes
-- **Version flexibility**: Use `@v1.0.0`, `@v1`, or `@main` - templates always come from `main`
-- **Backward compatibility**: Existing workflows continue to work without changes
-
-If a template repository doesn't have a `main` branch, the action falls back to the default branch.
-
 ## Inputs
 
 | Input                    | Required | Default   | Description                                                                                    |
