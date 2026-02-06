@@ -28,9 +28,9 @@
 \begin{center}
 	\begin{minipage}[b]{.2\textwidth}
 	\raggedright
+	[[ if .basics.email ]]\href{mailto:[[ .basics.email ]]}{[[ .basics.email ]]}[[ end ]]
 	[[ if .basics.phone ]]{\large [[ .basics.phone ]]} \\[[ end ]]
 	[[ if .basics.location ]][[ if .basics.location.city ]][[ if .basics.location.region ]]{[[ .basics.location.city ]], [[ .basics.location.region ]]} \\[[ else ]]{[[ .basics.location.city ]]} \\[[ end ]][[ else if .basics.location.region ]]{[[ .basics.location.region ]]} \\[[ end ]][[ end ]]
-	[[ if .basics.email ]]\href{mailto:[[ .basics.email ]]}{[[ .basics.email ]]}[[ end ]]
 	\end{minipage}%
 	\begin{minipage}[b]{.6\textwidth}
 	\centering {\huge [[ .basics.name ]]} \\
