@@ -33,6 +33,7 @@ export function parseArtifactNameTemplate(
 /**
  * Escape special LaTeX characters
  * Characters that need escaping: & % $ # _ { } ~ ^ \
+ * Unicode dashes, curly quotes and ellipsis become their TeX equivalents
  */
 export function escapeLatex(text: string): string {
   if (!text) return '';
@@ -47,7 +48,16 @@ export function escapeLatex(text: string): string {
     .replace(/\{/g, '\\{')
     .replace(/\}/g, '\\}')
     .replace(/~/g, '\\textasciitilde{}')
-    .replace(/\^/g, '\\textasciicircum{}');
+    .replace(/\^/g, '\\textasciicircum{}')
+    // The template's fonts have no glyphs for these, so the PDF silently drops them.
+    // TeX's own ligatures and commands produce the same marks.
+    .replace(/\u2014/g, '---')
+    .replace(/\u2013/g, '--')
+    .replace(/\u2018/g, '`')
+    .replace(/\u2019/g, "'")
+    .replace(/\u201c/g, '``')
+    .replace(/\u201d/g, "''")
+    .replace(/\u2026/g, '\\ldots{}');
 }
 
 /**

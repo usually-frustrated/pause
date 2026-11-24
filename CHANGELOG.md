@@ -6,6 +6,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **LaTeX punctuation**: Em and en dashes, curly quotes, and ellipses in `resume.json` now appear in the PDF. The template fonts have no glyphs for them, so they were dropped.
+- **LaTeX header**: Side columns are 30% of the page width (was 20%), so a line such as `LinkedIn: <username>` stays on one line.
+
 ### Planned
 - Official template repository (`usually-frustrated/pause-templates`)
 - Template preview generation
