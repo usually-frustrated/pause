@@ -6,7 +6,7 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "bun build src/index.ts --outdir=dist --target=node",
-    "test": "bun test",
+    "test": "bun test --isolate",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [

@@ -240,5 +240,7 @@ export async function run(): Promise<void> {
   }
 }
 
-// Run the action
-run();
+// Run the action when this file is the entry point. Importing it, as the tests do, must not start a run.
+if (import.meta.main) {
+  run();
+}

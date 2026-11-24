@@ -29,4 +29,5 @@ jobs:
         run: bun run typecheck
 
       - name: Run unit tests
-        run: bun test
+        # Test files mock shared modules; --isolate keeps one file's mocks out of the next.
+        run: bun test --isolate

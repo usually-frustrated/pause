@@ -49,7 +49,7 @@ bun install
 bun run typecheck
 
 # Run tests (when available)
-bun test
+bun test --isolate
 
 # Test action locally
 bun run src/index.ts
