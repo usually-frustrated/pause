@@ -7,6 +7,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Fixed
+- **HTML mobile view**: The HTML template now uses the device width and has phone styles. It used a fixed 1024px viewport, so phones showed a cropped desktop page.
 - **LaTeX punctuation**: Em and en dashes, curly quotes, and ellipses in `resume.json` now appear in the PDF. The template fonts have no glyphs for them, so they were dropped.
 - **LaTeX header**: Side columns are 30% of the page width (was 20%), so a line such as `LinkedIn: <username>` stays on one line.
 
